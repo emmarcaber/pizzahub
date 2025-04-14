@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\UserModel;
 use App\Controllers\BaseController;
 use CodeIgniter\HTTP\ResponseInterface;
 
@@ -9,8 +10,10 @@ class User extends BaseController
 {
     public function index()
     {
+
         $data = [
             'title' => 'Users',
+            'users' => model(UserModel::class)->findAll(),
         ];
 
         return view('admin/templates/header', $data)

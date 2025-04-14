@@ -64,13 +64,6 @@ class UserModel extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-
-    protected function beforeInsert(array $data): array
-    {
-        $data = $this->hashPassword($data);
-        return $data;
-    }
-
     protected function beforeUpdate(array $data): array
     {
         $data = $this->hashPassword($data);

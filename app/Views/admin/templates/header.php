@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -37,7 +36,7 @@
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                             Dashboard
                         </a>
-                        <a class="nav-link <?= uri_string() === 'admin/users' ? 'active' : '' ?>" href="<?= base_url('admin/users') ?>">
+                        <a class="nav-link <?= str_starts_with(uri_string(), 'admin/users') ? 'active' : '' ?>" href="<?= base_url('admin/users') ?>">
                             <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
                             Users
                         </a>
