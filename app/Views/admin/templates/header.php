@@ -11,7 +11,7 @@
 <body class="sb-nav-fixed">
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
         <!-- Navbar Brand-->
-        <a class="navbar-brand ps-3" href="index.html"><img class="img-fluid rounded w-75 p-3" src="<?= base_url('images/logo.png') ?>" /></a>
+        <a class="navbar-brand ps-3" href="<?= base_url('admin') ?>"><img class="img-fluid rounded w-75 p-3" src="<?= base_url('images/logo.png') ?>" /></a>
         <!-- Sidebar Toggle-->
         <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
         <!-- Navbar Search-->
@@ -37,9 +37,13 @@
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                             Dashboard
                         </a>
-                        <a class="nav-link" href="index.html">
+                        <a class="nav-link <?= uri_string() === 'admin/users' ? 'active' : '' ?>" href="<?= base_url('admin/users') ?>">
                             <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
                             Users
+                        </a>
+                        <a class="nav-link" href="index.html">
+                            <div class="sb-nav-link-icon"><i class="fas fa-layer-group"></i></div>
+                            Categories
                         </a>
                         <a class="nav-link" href="index.html">
                             <div class="sb-nav-link-icon"><i class="fas fa-pizza-slice"></i></div>

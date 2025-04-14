@@ -5,16 +5,16 @@ namespace App\Controllers;
 use App\Controllers\BaseController;
 use CodeIgniter\HTTP\ResponseInterface;
 
-class Admin extends BaseController
+class User extends BaseController
 {
     public function index()
     {
         $data = [
-            'title' => 'Dashboard',
+            'title' => 'Users',
         ];
 
         return view('admin/templates/header', $data)
-        . view('admin/pages/index', $data)
+        . view('admin/pages/users/index', $data)
         . view('admin/templates/footer');
     }
 }
