@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
+    <title>PizzaHub <?= isset($title) ? "- $title" : '' ?></title>
     <link rel="stylesheet" type="text/css" href="<?= base_url('css/styles.css') ?>">
 </head>
 
@@ -61,13 +61,3 @@
         <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4">
-                    <?= isset($content) ? $content : '' ?>
-                </div>
-            </main>
-        </div>
-
-        <script src="<?= base_url('js/script.js') ?>"></script>
-        <script src="<?= base_url('js/font-awesome.js') ?>"></script>
-</body>
-
-</html>

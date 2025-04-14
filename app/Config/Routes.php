@@ -10,7 +10,7 @@ use CodeIgniter\Router\RouteCollection;
 $routes->get('/', 'Home::index');
 $routes->get('/auth', [Authenticated::class, 'index']);
 
-// Admin Routes
+
 $routes->group('admin', static function ($routes) {
     $routes->get('/', [Admin::class, 'index']);
 });

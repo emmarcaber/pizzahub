@@ -9,8 +9,12 @@ class Admin extends BaseController
 {
     public function index()
     {
-        return view('layout/admin-layout', [
-            'content' => view('admin/dashboard'),
-        ]);
+        $data = [
+            'title' => 'Dashboard',
+        ];
+
+        return view('admin/templates/header', $data)
+        . view('admin/pages/dashboard', $data)
+        . view('admin/templates/footer');
     }
 }
