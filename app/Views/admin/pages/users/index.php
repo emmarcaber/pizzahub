@@ -6,10 +6,6 @@
 
 <div class="card mb-4">
     <div class="card-body">
-        <div class="d-flex justify-content-end mb-3">
-            <button class="btn btn-primary">Create User</button>
-        </div>
-
         <div class="card mb-4">
             <div class="card-header">
                 <i class="fas fa-table me-1"></i>
@@ -34,7 +30,6 @@
                             <td><?= htmlspecialchars($user['role'], ENT_QUOTES, 'UTF-8') ?></td>
                             <td><?= htmlspecialchars($user['phone'], ENT_QUOTES, 'UTF-8') ?></td>
                             <td>
-                                <a href="<?= base_url('/admin/users/edit/' . $user['id']) ?>" class="btn btn-sm btn-warning">Edit</a>
                                 <a href="<?= base_url('/admin/users/delete/' . $user['id']) ?>" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this user?');">Delete</a>
                             </td>
                         </tr>
