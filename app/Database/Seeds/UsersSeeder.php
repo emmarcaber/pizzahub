@@ -17,8 +17,6 @@ class UsersSeeder extends Seeder
                 'role' => 'admin',
                 'address' => '123 Admin Street',
                 'phone' => '1234567890',
-                'created_at' => Time::now(),
-                'updated_at' => Time::now()
             ],
             [
                 'name' => 'Customer',
@@ -27,8 +25,6 @@ class UsersSeeder extends Seeder
                 'role' => 'customer',
                 'address' => '456 Customer Avenue',
                 'phone' => '0987654321',
-                'created_at' => Time::now(),
-                'updated_at' => Time::now()
             ]
         ];
 

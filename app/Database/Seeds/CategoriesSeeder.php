@@ -13,22 +13,18 @@ class CategoriesSeeder extends Seeder
             [
                 'name' => 'Classic',
                 'description' => 'Traditional pizza favorites',
-                'created_at' => Time::now()
             ],
             [
                 'name' => 'Specialty',
                 'description' => 'Our chef\'s special creations',
-                'created_at' => Time::now()
             ],
             [
                 'name' => 'Vegetarian',
                 'description' => 'Meat-free delicious options',
-                'created_at' => Time::now()
             ],
             [
                 'name' => 'Vegan',
                 'description' => 'Plant-based pizza options',
-                'created_at' => Time::now()
             ]
         ];
 

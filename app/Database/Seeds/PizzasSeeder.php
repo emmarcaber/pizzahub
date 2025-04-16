@@ -16,8 +16,6 @@ class PizzasSeeder extends Seeder
                 'description' => 'Classic tomato sauce, mozzarella, and basil',
                 'price' => 9.99,
                 'is_available' => 1,
-                'created_at' => Time::now(),
-                'updated_at' => Time::now()
             ],
             [
                 'category_id' => 1,
@@ -25,8 +23,6 @@ class PizzasSeeder extends Seeder
                 'description' => 'Tomato sauce, mozzarella, and pepperoni',
                 'price' => 11.99,
                 'is_available' => 1,
-                'created_at' => Time::now(),
-                'updated_at' => Time::now()
             ],
             [
                 'category_id' => 2,
@@ -34,8 +30,6 @@ class PizzasSeeder extends Seeder
                 'description' => 'BBQ sauce, chicken, red onions, and cilantro',
                 'price' => 13.99,
                 'is_available' => 1,
-                'created_at' => Time::now(),
-                'updated_at' => Time::now()
             ],
             [
                 'category_id' => 3,
@@ -43,8 +37,6 @@ class PizzasSeeder extends Seeder
                 'description' => 'Tomato sauce, mozzarella, bell peppers, mushrooms, and olives',
                 'price' => 12.99,
                 'is_available' => 1,
-                'created_at' => Time::now(),
-                'updated_at' => Time::now()
             ],
             [
                 'category_id' => 4,
@@ -52,8 +44,6 @@ class PizzasSeeder extends Seeder
                 'description' => 'Vegan cheese, tomato sauce, artichokes, sun-dried tomatoes, and spinach',
                 'price' => 14.99,
                 'is_available' => 1,
-                'created_at' => Time::now(),
-                'updated_at' => Time::now()
             ]
         ];
 
