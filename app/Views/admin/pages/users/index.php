@@ -24,15 +24,21 @@
                     </thead>
                     <tbody>
                         <?php foreach ($users as $user): ?>
-                        <tr>
-                            <td><?= htmlspecialchars($user['name'], ENT_QUOTES, 'UTF-8') ?></td>
-                            <td><?= htmlspecialchars($user['email'], ENT_QUOTES, 'UTF-8') ?></td>
-                            <td><?= htmlspecialchars($user['role'], ENT_QUOTES, 'UTF-8') ?></td>
-                            <td><?= htmlspecialchars($user['phone'], ENT_QUOTES, 'UTF-8') ?></td>
-                            <td>
-                                <a href="<?= base_url('/admin/users/delete/' . $user['id']) ?>" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this user?');">Delete</a>
-                            </td>
-                        </tr>
+                            <tr>
+                                <td><?= esc($user['name']) ?></td>
+                                <td><?= esc($user['email']) ?></td>
+                                <td><?= esc($user['role']) ?></td>
+                                <td><?= esc($user['phone']) ?></td>
+                                <td>
+                                    <form action="<?= route_to('admin.users.delete', esc($user['id'], 'url')) ?>" method="post">
+                                        <?= csrf_field() ?>
+                                        <input type="hidden" name="_method" value="DELETE">
+                                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure? This cannot be undone.');">
+                                            Delete
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
                         <?php endforeach; ?>
                     </tbody>
                 </table>

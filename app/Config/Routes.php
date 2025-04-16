@@ -8,12 +8,16 @@ use CodeIgniter\Router\RouteCollection;
 /**
  * @var RouteCollection $routes
  */
-$routes->get('/', 'Home::index');
+// $routes->get('/', 'Home::index');
 $routes->get('/auth', [Authenticated::class, 'index']);
 
 
-$routes->group('admin', function ($routes) {
-    $routes->get('/', [Admin::class, 'index']);
+$routes->group('admin', ['as' => 'admin.'], function ($routes) {
+    $routes->get('/', [Admin::class, 'index'], ['as' => 'admin.index']);
 
-    $routes->get('users', [User::class, 'index']);
+    $routes->group('users', ['as' => 'users.'], function ($routes) {
+        $routes->get('/', [User::class, 'index'], ['as' => 'admin.users.index']);
+        $routes->delete('delete/(:num)', [User::class, 'delete'], ['as' => 'admin.users.delete']);
+    });
+
 });

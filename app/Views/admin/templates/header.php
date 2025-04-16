@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,7 +11,7 @@
 <body class="sb-nav-fixed">
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
         <!-- Navbar Brand-->
-        <a class="navbar-brand ps-3" href="<?= base_url('admin') ?>"><img class="img-fluid rounded w-75 p-3" src="<?= base_url('images/logo.png') ?>" /></a>
+        <a class="navbar-brand ps-3" href="<?= route_to('admin.index') ?>"><img class="img-fluid rounded w-75 p-3" src="<?= base_url('images/logo.png') ?>" /></a>
         <!-- Sidebar Toggle-->
         <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
         <!-- Navbar Search-->
@@ -32,11 +33,12 @@
                 <div class="sb-sidenav-menu">
                     <div class="nav">
                         <div class="sb-sidenav-menu-heading">Resources</div>
-                        <a class="nav-link <?= uri_string() === 'admin' ? 'active' : '' ?>" href="<?= base_url('admin') ?>">
+                        <a class="nav-link <?= uri_string() === 'admin' ? 'active' : '' ?>" href="<?= route_to('admin.index') ?>">
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                             Dashboard
                         </a>
-                        <a class="nav-link <?= str_starts_with(uri_string(), 'admin/users') ? 'active' : '' ?>" href="<?= base_url('admin/users') ?>">
+                        <a class="nav-link <?= str_starts_with(uri_string(), 'admin/users') ? 'active' : '' ?>"
+                            href="<?= route_to('admin.users.index') ?>">
                             <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
                             Users
                         </a>
