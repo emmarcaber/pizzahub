@@ -2,6 +2,7 @@
 
 use App\Controllers\User;
 use App\Controllers\Admin;
+use App\Controllers\Category;
 use App\Controllers\Authenticated;
 use CodeIgniter\Router\RouteCollection;
 
@@ -18,6 +19,11 @@ $routes->group('admin', ['as' => 'admin.'], function ($routes) {
     $routes->group('users', ['as' => 'users.'], function ($routes) {
         $routes->get('/', [User::class, 'index'], ['as' => 'admin.users.index']);
         $routes->delete('delete/(:num)', [User::class, 'delete'], ['as' => 'admin.users.delete']);
+    });
+
+    $routes->group('categories', ['as' => 'categories.'], function ($routes) {
+        $routes->get('/', [Category::class, 'index'], ['as' => 'admin.categories.index']);
+        $routes->delete('delete/(:num)', [Category::class, 'delete'], ['as' => 'admin.categories.delete']);
     });
 
 });

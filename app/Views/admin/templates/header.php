@@ -37,12 +37,15 @@
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                             Dashboard
                         </a>
-                        <a class="nav-link <?= str_starts_with(uri_string(), 'admin/users') ? 'active' : '' ?>"
+                        <a class="nav-link 
+                        <?= str_starts_with(uri_string(), 'admin/users') ? 'active' : '' ?>"
                             href="<?= route_to('admin.users.index') ?>">
                             <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
                             Users
                         </a>
-                        <a class="nav-link" href="index.html">
+                        <a class="nav-link 
+                        <?= str_starts_with(uri_string(), 'admin/categories') ? 'active' : '' ?>" 
+                        href="<?= route_to('admin.categories.index') ?>">
                             <div class="sb-nav-link-icon"><i class="fas fa-layer-group"></i></div>
                             Categories
                         </a>

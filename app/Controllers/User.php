@@ -13,9 +13,9 @@ class User extends BaseController
 
     public function __construct()
     {
-        $this->userModel = new UserModel();
+        $this->userModel = model(UserModel::class);
     }
-    
+
 
     public function index()
     {
@@ -30,21 +30,19 @@ class User extends BaseController
             . view('admin/templates/footer');
     }
 
-    public function delete($id)
+    public function create() {}
+
+    public function delete(int $id)
     {
-
-        if (!is_numeric($id)) {
-            throw new \InvalidArgumentException('Invalid user ID');
-        }
-
         $user = $this->userModel->find($id);
-    
-        if (!$user) {
+
+        if (! $user) {
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
         }
 
         $this->userModel->delete($id);
 
-        return redirect('admin.users.index')->with('success', 'User deleted successfully');
+        return redirect()->route('admin.users.index')
+            ->with('success', 'User deleted successfully.');
     }
 }
