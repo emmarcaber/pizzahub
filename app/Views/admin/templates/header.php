@@ -49,7 +49,9 @@
                             <div class="sb-nav-link-icon"><i class="fas fa-layer-group"></i></div>
                             Categories
                         </a>
-                        <a class="nav-link" href="index.html">
+                        <a class="nav-link 
+                        <?= str_starts_with(uri_string(), 'admin/pizzas') ? 'active' : '' ?>" 
+                        href="<?= route_to('admin.pizzas.index') ?>">
                             <div class="sb-nav-link-icon"><i class="fas fa-pizza-slice"></i></div>
                             Pizzas
                         </a>

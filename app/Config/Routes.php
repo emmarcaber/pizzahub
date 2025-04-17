@@ -2,6 +2,7 @@
 
 use App\Controllers\User;
 use App\Controllers\Admin;
+use App\Controllers\Pizza;
 use App\Controllers\Category;
 use App\Controllers\Authenticated;
 use CodeIgniter\Router\RouteCollection;
@@ -33,4 +34,15 @@ $routes->group('admin', ['as' => 'admin.'], function ($routes) {
         $routes->delete('delete/(:num)', [Category::class, 'delete'], ['as' => 'admin.categories.delete']);
     });
 
+    $routes->group('pizzas', ['as' => 'pizzas.'], function ($routes) {
+        $routes->get('/', [Pizza::class, 'index'], ['as' => 'admin.pizzas.index']);
+
+        $routes->get('create', [Pizza::class, 'create'], ['as' => 'admin.pizzas.create']);
+        $routes->post('store', [Pizza::class, 'store'], ['as' => 'admin.pizzas.store']);
+
+        $routes->get('edit/(:num)', [Pizza::class, 'edit'], ['as' => 'admin.pizzas.edit']);
+        $routes->put('update/(:num)', [Pizza::class, 'update'], ['as' => 'admin.pizzas.update']);
+
+        $routes->delete('delete/(:num)', [Pizza::class, 'delete'], ['as' => 'admin.pizzas.delete']);
+    });
 });

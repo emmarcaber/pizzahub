@@ -61,6 +61,13 @@ class PizzaModel extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
+    public function canDelete(int $pizzaId): bool
+    {
+        $orderModel = model(OrderModel::class);
+        $orderCount = $orderModel->where('pizza_id', $pizzaId)->countAllResults();
+
+        return $orderCount === 0;
+    }
 
     public function getPizzasWithCategory($categoryId = null, $onlyAvailable = true): array
     {
@@ -76,7 +83,7 @@ class PizzaModel extends Model
             $builder->where('p.is_available', 1);
         }
 
-        return $builder->get()->getResultArray();
+        return $builder->orderBy('id', 'DESC')->get()->getResultArray();
     }
 
     public function getAvailablePizzas(): array
@@ -154,4 +161,6 @@ class PizzaModel extends Model
 
         return $builder->findAll();
     }
+
+    
 }
