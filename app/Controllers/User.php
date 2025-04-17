@@ -20,7 +20,7 @@ class User extends BaseController
     public function index()
     {
         $users = $this->userModel
-            ->orderBy('created_at', 'DESC')
+            ->orderBy('id', 'DESC')
             ->findAll();
 
         $data = [

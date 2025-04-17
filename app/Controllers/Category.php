@@ -20,7 +20,7 @@ class Category extends BaseController
     public function index()
     {
         $categories = $this->categoryModel
-            ->orderBy('created_at', 'DESC')
+            ->orderBy('id', 'DESC')
             ->findAll();
 
         $data = [
@@ -118,6 +118,11 @@ class Category extends BaseController
 
         if (! $category) {
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+        }
+
+        if (! $this->categoryModel->canDelete($id)) {
+            return redirect()->route('admin.categories.index')
+                ->with('error', 'Category cannot be deleted because it has associated pizzas.');
         }
 
         $this->categoryModel->delete($id);

@@ -28,26 +28,32 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($categories as $category): ?>
+                        <?php if (empty($categories)): ?>
                             <tr>
-                                <td><?= esc($category['name']) ?></td>
-                                <td><?= esc($category['description']) ?></td>
-                                <td>
-                                    <a href="<?= route_to('admin.categories.edit', esc($category['id'], 'url')) ?>" class="btn btn-sm btn-warning">
-                                        <i class="fas fa-edit"></i>
-                                        Edit
-                                    </a>
-                                    <form class="d-inline" action="<?= route_to('admin.categories.delete', esc($category['id'], 'url')) ?>" method="post">
-                                        <?= csrf_field() ?>
-                                        <input type="hidden" name="_method" value="DELETE">
-                                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure? This cannot be undone.');">
-                                            <i class="fas fa-trash"></i>
-                                            Delete
-                                        </button>
-                                    </form>
-                                </td>
+                                <td colspan="3" class="text-center">No categories found.</td>
                             </tr>
-                        <?php endforeach; ?>
+                        <?php else: ?>
+                            <?php foreach ($categories as $category): ?>
+                                <tr>
+                                    <td><?= esc($category['name']) ?></td>
+                                    <td><?= esc($category['description']) ?></td>
+                                    <td>
+                                        <a href="<?= route_to('admin.categories.edit', esc($category['id'], 'url')) ?>" class="btn btn-sm btn-warning">
+                                            <i class="fas fa-edit"></i>
+                                            Edit
+                                        </a>
+                                        <form class="d-inline" action="<?= route_to('admin.categories.delete', esc($category['id'], 'url')) ?>" method="post">
+                                            <?= csrf_field() ?>
+                                            <input type="hidden" name="_method" value="DELETE">
+                                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure? This cannot be undone.');">
+                                                <i class="fas fa-trash"></i>
+                                                Delete
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>

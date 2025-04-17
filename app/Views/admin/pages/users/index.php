@@ -23,24 +23,30 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($users as $user): ?>
+                        <?php if (empty($users)): ?>
                             <tr>
-                                <td><?= esc($user['name']) ?></td>
-                                <td><?= esc($user['email']) ?></td>
-                                <td><?= esc($user['role']) ?></td>
-                                <td><?= esc($user['phone']) ?></td>
-                                <td>
-                                    <form action="<?= route_to('admin.users.delete', esc($user['id'], 'url')) ?>" method="post">
-                                        <?= csrf_field() ?>
-                                        <input type="hidden" name="_method" value="DELETE">
-                                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure? This cannot be undone.');">
-                                            <i class="fas fa-trash"></i>
-                                            Delete
-                                        </button>
-                                    </form>
-                                </td>
+                                <td colspan="5" class="text-center">No users found.</td>
                             </tr>
-                        <?php endforeach; ?>
+                        <?php else: ?>
+                            <?php foreach ($users as $user): ?>
+                                <tr>
+                                    <td><?= esc($user['name']) ?></td>
+                                    <td><?= esc($user['email']) ?></td>
+                                    <td><?= esc($user['role']) ?></td>
+                                    <td><?= esc($user['phone']) ?></td>
+                                    <td>
+                                        <form action="<?= route_to('admin.users.delete', esc($user['id'], 'url')) ?>" method="post">
+                                            <?= csrf_field() ?>
+                                            <input type="hidden" name="_method" value="DELETE">
+                                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure? This cannot be undone.');">
+                                                <i class="fas fa-trash"></i>
+                                                Delete
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>

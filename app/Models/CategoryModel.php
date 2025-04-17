@@ -62,6 +62,14 @@ class CategoryModel extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
+    public function canDelete(int $categoryId): bool
+    {
+        $pizzaModel = new PizzaModel();
+        $pizzaCount = $pizzaModel->where('category_id', $categoryId)->countAllResults();
+
+        return $pizzaCount === 0;
+    }
+
     public function getCategoriesWithCount(): array
     {
         $builder = $this->db->table('categories c');
@@ -80,15 +88,6 @@ class CategoryModel extends Model
     public function getActiveCategories(): array
     {
         return $this->orderBy('name', 'ASC')->findAll();
-    }
-
-
-    public function canDelete(int $categoryId): bool
-    {
-        $pizzaModel = new PizzaModel();
-        $pizzaCount = $pizzaModel->where('category_id', $categoryId)->countAllResults();
-
-        return $pizzaCount === 0;
     }
 
     public function search(string $term): array
