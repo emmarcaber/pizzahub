@@ -90,7 +90,7 @@
                     </div>
 
                     <a href="<?= route_to('admin.pizzas.index') ?>" class="btn btn-secondary">Cancel</a>
-                    <button type="submit" class="btn btn-primary">Create Pizza</button>
+                    <button type="submit" class="btn btn-primary" onclick="enableImageInput()">Create Pizza</button>
                 </form>
             </div>
         </div>

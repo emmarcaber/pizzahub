@@ -4155,3 +4155,13 @@ function clearImagePreview() {
   preview.src = '';
   previewContainer.style.display = 'none';
 }
+
+function enableImageInput() {
+  const input = document.getElementById('image');
+  const previewContainer = document.getElementById('imagePreviewContainer');
+  const preview = document.getElementById('imagePreview');
+  
+  input.disabled = false;
+  preview.src = '';
+  previewContainer.style.display = 'none';
+}
