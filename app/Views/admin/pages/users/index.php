@@ -34,6 +34,7 @@
                                         <?= csrf_field() ?>
                                         <input type="hidden" name="_method" value="DELETE">
                                         <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure? This cannot be undone.');">
+                                            <i class="fas fa-trash"></i>
                                             Delete
                                         </button>
                                     </form>
