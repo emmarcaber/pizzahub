@@ -69,10 +69,17 @@
                                 <textarea class="form-control" id="description" name="description" rows="3"><?= old('description') ?></textarea>
                             </div>
 
+                            <!-- Add this right after your file input -->
                             <div class="mb-3">
                                 <label for="image" class="form-label">Pizza Image</label>
-                                <input type="file" class="form-control" id="image" name="image" accept="image/*">
+                                <input type="file" class="form-control" id="image" name="image" accept="image/*" onchange="previewImage(event)">
                                 <small class="text-muted">Recommended size: 500x500 pixels</small>
+                                <div class="mt-2" id="imagePreviewContainer" style="display: none;">
+                                    <img id="imagePreview" class="img-thumbnail" style="max-width: 200px; max-height: 200px;">
+                                    <button type="button" class="btn btn-sm btn-danger ms-2" onclick="clearImagePreview()">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
                             </div>
 
                             <div class="mb-3 form-check">

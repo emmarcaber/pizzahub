@@ -4126,3 +4126,32 @@ window.addEventListener('DOMContentLoaded', event => {
       });
   }, 3000);
 });
+
+function previewImage(event) {
+  const input = event.target;
+  const previewContainer = document.getElementById('imagePreviewContainer');
+  const preview = document.getElementById('imagePreview');
+  
+  if (input.files && input.files[0]) {
+      const reader = new FileReader();
+      
+      reader.onload = function(e) {
+          preview.src = e.target.result;
+          previewContainer.style.display = 'block';
+      }
+      
+      reader.readAsDataURL(input.files[0]);
+      input.disabled = true;
+  }
+}
+
+function clearImagePreview() {
+  const input = document.getElementById('image');
+  const previewContainer = document.getElementById('imagePreviewContainer');
+  const preview = document.getElementById('imagePreview');
+  
+  input.value = '';
+  input.disabled = false;
+  preview.src = '';
+  previewContainer.style.display = 'none';
+}

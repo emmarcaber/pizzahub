@@ -10,7 +10,7 @@
 
         <div class="card mb-4">
             <div class="card-header">
-                <i class="fas fa-plus me-1"></i>
+                <i class="fas fa-edit me-1"></i>
                 <?= $title ?? '' ?>
             </div>
             <div class="card-body">
