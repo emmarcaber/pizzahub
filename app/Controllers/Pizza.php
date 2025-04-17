@@ -2,8 +2,9 @@
 
 namespace App\Controllers;
 
-use App\Controllers\BaseController;
 use App\Models\PizzaModel;
+use App\Models\CategoryModel;
+use App\Controllers\BaseController;
 use CodeIgniter\HTTP\ResponseInterface;
 
 class Pizza extends BaseController
@@ -12,9 +13,12 @@ class Pizza extends BaseController
 
     protected $pizzaModel;
 
+    protected $categoryModel;
+
     public function __construct()
     {
         $this->pizzaModel = model(PizzaModel::class);
+        $this->categoryModel = model(CategoryModel::class);
     }
 
     public function index()
@@ -24,10 +28,76 @@ class Pizza extends BaseController
         $data = [
             'title' => 'Pizzas',
             'pizzas' => $pizzas,
+            'validation' => \Config\Services::validation(),
         ];
 
         return view('admin/templates/header', $data)
             . view('admin/pages/pizzas/index', $data)
             . view('admin/templates/footer');
+    }
+
+    public function create()
+    {
+        $categories = $this->categoryModel->orderBy('name')->findAll();
+
+        $data = [
+            'title' => 'Create Pizza',
+            'categories' => $categories,
+            'validation' => \Config\Services::validation(),
+        ];
+
+        return view('admin/templates/header', $data)
+            . view('admin/pages/pizzas/create', $data)
+            . view('admin/templates/footer');
+    }
+
+    public function store()
+    {
+        if (!$this->validate($this->pizzaModel->validationRules)) {
+            return redirect()->back()
+                ->withInput()
+                ->with('validation', $this->validator)
+                ->with('error', $this->validator->listErrors());
+        }
+
+        $data = [
+            'category_id' => $this->request->getPost('category_id'),
+            'name' => $this->request->getPost('name'),
+            'description' => $this->request->getPost('description'),
+            'price' => $this->request->getPost('price'),
+            'is_available' => $this->request->getPost('is_available') ?? 0
+        ];
+
+        $pizzaId = $this->pizzaModel->insert($data, true);
+
+        // Handle image upload using model's method
+        $image = $this->request->getFile('image');
+        if ($image && $image->isValid() && !$image->hasMoved()) {
+            $this->pizzaModel->handleImageUpload($pizzaId, $image);
+        }
+
+        return redirect()->route('admin.pizzas.index')
+            ->with('success', 'Pizza has been created successfully.');
+    }
+
+    public function delete(int $id)
+    {
+        $pizza = $this->pizzaModel->find($id);
+
+        if (!$pizza) {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+        }
+
+        if (!$this->pizzaModel->canDelete($id)) {
+            return redirect()->back()
+                ->with('error', 'Pizza cannot be deleted as it is associated with an order.');
+        }
+
+        $this->pizzaModel->deleteImage($id);
+
+        $this->pizzaModel->delete($id);
+
+        return redirect()->route('admin.pizzas.index')
+            ->with('success', 'Pizza has been deleted successfully.');
     }
 }

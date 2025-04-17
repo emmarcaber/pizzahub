@@ -90,6 +90,18 @@ class CategoryModel extends Model
         return $this->orderBy('name', 'ASC')->findAll();
     }
 
+    public function getPizzasByCategory(int $categoryId): array
+    {
+        $pizzaModel = model(PizzaModel::class);
+        $pizzas = $pizzaModel->select('pizzas.*, categories.name as category_name')
+            ->join('categories', 'categories.id = pizzas.category_id')
+            ->where('pizzas.category_id', $categoryId)
+            ->orderBy('pizzas.id', 'DESC')
+            ->findAll();
+
+        return $pizzas;
+    }
+
     public function search(string $term): array
     {
         return $this->like('name', $term)

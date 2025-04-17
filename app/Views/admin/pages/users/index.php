@@ -38,7 +38,7 @@
                                         <form action="<?= route_to('admin.users.delete', esc($user['id'], 'url')) ?>" method="post">
                                             <?= csrf_field() ?>
                                             <input type="hidden" name="_method" value="DELETE">
-                                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure? This cannot be undone.');">
+                                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this user? This cannot be undone.');">
                                                 <i class="fas fa-trash"></i>
                                                 Delete
                                             </button>

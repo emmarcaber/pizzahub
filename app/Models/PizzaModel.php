@@ -40,12 +40,23 @@ class PizzaModel extends Model
         'name' => 'required|min_length[3]|max_length[100]|is_unique[pizzas.name,id,{id}]',
         'description' => 'permit_empty',
         'price' => 'required|numeric|greater_than[0]',
-        'is_available' => 'required|in_list[0,1]'
     ];
     protected $validationMessages   = [
+        'category_id' => [
+            'required' => 'Please select a category',
+            'numeric' => 'Invalid category selection'
+        ],
+        'name' => [
+            'required' => 'Pizza name is required',
+            'min_length' => 'Pizza name must be at least 3 characters',
+            'max_length' => 'Pizza name cannot exceed 100 characters',
+            'is_unique' => 'This pizza name already exists'
+        ],
         'price' => [
+            'required' => 'Price is required',
+            'numeric' => 'Price must be a number',
             'greater_than' => 'Price must be greater than 0'
-        ]
+        ],
     ];
     protected $skipValidation       = false;
     protected $cleanValidationRules = true;
@@ -64,7 +75,11 @@ class PizzaModel extends Model
     public function canDelete(int $pizzaId): bool
     {
         $orderModel = model(OrderModel::class);
-        $orderCount = $orderModel->where('pizza_id', $pizzaId)->countAllResults();
+        $orderCount = $orderModel
+            ->join('order_items', 'order_items.order_id = orders.id')
+            ->where('orders.status !=', 'cancelled')
+            ->where('orders.status !=', 'delivered')
+            ->where('order_items.pizza_id', $pizzaId)->countAllResults();
 
         return $orderCount === 0;
     }
@@ -114,20 +129,23 @@ class PizzaModel extends Model
     public function handleImageUpload($pizzaId, $imageFile): bool
     {
         $pizza = $this->find($pizzaId);
-        if (!$pizza) {
+        if (! $pizza) {
             return false;
         }
 
-        // Delete old image if exists
-        if (!empty($pizza['image']) && file_exists(ROOTPATH . 'public/' . $pizza['image'])) {
+        if (! $imageFile->isValid() || strpos($imageFile->getMimeType(), 'image/') !== 0) {
+            return false;
+        }
+
+        if (! empty($pizza['image']) && file_exists(ROOTPATH . 'public/' . $pizza['image'])) {
             unlink(ROOTPATH . 'public/' . $pizza['image']);
         }
 
-        // Generate new filename
+        // Generate new filename and path
         $newName = $imageFile->getRandomName();
         $imagePath = 'uploads/pizzas/' . $newName;
 
-        // Move uploaded file
+        // Move uploaded file and update database
         if ($imageFile->move(ROOTPATH . 'public/uploads/pizzas', $newName)) {
             return $this->update($pizzaId, ['image' => $imagePath]);
         }
@@ -135,10 +153,11 @@ class PizzaModel extends Model
         return false;
     }
 
-    public function deleteImage($pizzaId): bool
+    public function deleteImage(int $pizzaId): bool
     {
+        /** @var mixed $pizza */
         $pizza = $this->find($pizzaId);
-        if (!$pizza || empty($pizza['image'])) {
+        if (! $pizza || empty($pizza['image'])) {
             return false;
         }
 
@@ -161,6 +180,4 @@ class PizzaModel extends Model
 
         return $builder->findAll();
     }
-
-    
 }

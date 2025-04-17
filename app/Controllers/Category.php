@@ -62,7 +62,7 @@ class Category extends BaseController
         $this->categoryModel->save($data);
 
         return redirect()->route('admin.categories.index')
-            ->with('success', 'Category has been created successfully!');
+            ->with('success', 'Category has been created successfully.');
     }
 
     public function edit(int $id)
