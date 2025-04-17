@@ -51,7 +51,7 @@ class Category extends BaseController
             return redirect()->back()
                 ->withInput()
                 ->with('validation', $this->validator)
-                ->with('error', 'Category has been not created.');
+                ->with('error', 'Failed to create category. Please try again.');
         }
 
         $data = [
@@ -63,6 +63,53 @@ class Category extends BaseController
 
         return redirect()->route('admin.categories.index')
             ->with('success', 'Category has been created successfully!');
+    }
+
+    public function edit(int $id)
+    {
+        $category = $this->categoryModel->find($id);
+
+        if (! $category) {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+        }
+
+        $data = [
+            'title' => 'Edit Category',
+            'category' => $category,
+            'validation' => \Config\Services::validation(),
+        ];
+
+        return view('admin/templates/header', $data)
+            . view('admin/pages/categories/edit', $data)
+            . view('admin/templates/footer');
+    }
+
+    public function update(int $id)
+    {
+        $category = $this->categoryModel->find($id);
+        if (! $category) {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+        }
+
+        $validationRules = $this->categoryModel->validationRules;
+        $validationRules['name'] = "required|min_length[3]|max_length[50]|is_unique[categories.name,id,{$id}]";
+
+        if (! $this->validate($validationRules)) {
+            return redirect()->back()
+                ->withInput()
+                ->with('validation', $this->validator)
+                ->with('error', 'Failed to update category. Please try again.');
+        }
+
+        $data = [
+            'name' => $this->request->getPost('name'),
+            'description' => $this->request->getPost('description'),
+        ];
+
+        $this->categoryModel->update($id, $data);
+
+        return redirect()->route('admin.categories.index')
+            ->with('success', 'Category has been updated successfully!');
     }
 
     public function delete(int $id)

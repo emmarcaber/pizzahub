@@ -23,8 +23,13 @@ $routes->group('admin', ['as' => 'admin.'], function ($routes) {
 
     $routes->group('categories', ['as' => 'categories.'], function ($routes) {
         $routes->get('/', [Category::class, 'index'], ['as' => 'admin.categories.index']);
+
         $routes->get('create', [Category::class, 'create'], ['as' => 'admin.categories.create']);
         $routes->post('store', [Category::class, 'store'], ['as' => 'admin.categories.store']);
+
+        $routes->get('edit/(:num)', [Category::class, 'edit'], ['as' => 'admin.categories.edit']);
+        $routes->put('update/(:num)', [Category::class, 'update'], ['as' => 'admin.categories.update']);
+
         $routes->delete('delete/(:num)', [Category::class, 'delete'], ['as' => 'admin.categories.delete']);
     });
 

@@ -33,7 +33,11 @@
                                 <td><?= esc($category['name']) ?></td>
                                 <td><?= esc($category['description']) ?></td>
                                 <td>
-                                    <form action="<?= route_to('admin.categories.delete', esc($category['id'], 'url')) ?>" method="post">
+                                    <a href="<?= route_to('admin.categories.edit', esc($category['id'], 'url')) ?>" class="btn btn-sm btn-warning">
+                                        <i class="fas fa-edit"></i>
+                                        Edit
+                                    </a>
+                                    <form class="d-inline" action="<?= route_to('admin.categories.delete', esc($category['id'], 'url')) ?>" method="post">
                                         <?= csrf_field() ?>
                                         <input type="hidden" name="_method" value="DELETE">
                                         <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure? This cannot be undone.');">
