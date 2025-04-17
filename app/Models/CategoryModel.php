@@ -34,11 +34,18 @@ class CategoryModel extends Model
     // Validation
     protected $validationRules      = [
         'name' => 'required|min_length[3]|max_length[50]|is_unique[categories.name,id,{id}]',
-        'description' => 'permit_empty|max_length[500]'
+        'description' => 'required|max_length[500]'
     ];
     protected $validationMessages   = [
         'name' => [
-            'is_unique' => 'This category name already exists.'
+            'required' => 'Category name is required',
+            'min_length' => 'Category name must be at least 3 characters',
+            'max_length' => 'Category name cannot exceed 50 characters',
+            'is_unique' => 'This category name already exists'
+        ],
+        'description' => [
+            'required' => 'Description is required',
+            'max_length' => 'Description cannot exceed 500 characters'
         ]
     ];
     protected $skipValidation       = false;

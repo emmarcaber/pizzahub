@@ -1,13 +1,16 @@
 <h1 class="mt-4"><?= $title ?? '' ?></h1>
 <ol class="breadcrumb mb-4">
-    <li class="breadcrumb-item"><a href="<?= base_url('/admin') ?>">Dashboard</a></li>
-    <li class="breadcrumb-item active">Categories</li>
+    <li class="breadcrumb-item"><a href="<?= route_to('admin.index') ?>">Dashboard</a></li>
+    <li class="breadcrumb-item">Categories</li>
 </ol>
 
 <div class="card mb-4">
     <div class="card-body">
         <div class="d-flex justify-content-end align-items-center mb-4">
-            <a href="<?= route_to('admin.categories.create') ?>" class="btn btn-sm btn-primary">Create Category</a>
+            <a href="<?= route_to('admin.categories.create') ?>" class="btn btn-sm btn-primary">
+                <i class="fas fa-plus"></i>
+                Create Category
+            </a>
         </div>
 
         <div class="card mb-4">
@@ -34,6 +37,7 @@
                                         <?= csrf_field() ?>
                                         <input type="hidden" name="_method" value="DELETE">
                                         <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure? This cannot be undone.');">
+                                            <i class="fas fa-trash"></i>
                                             Delete
                                         </button>
                                     </form>

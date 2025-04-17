@@ -19,10 +19,13 @@ class User extends BaseController
 
     public function index()
     {
+        $users = $this->userModel
+            ->orderBy('created_at', 'DESC')
+            ->findAll();
 
         $data = [
             'title' => 'Users',
-            'users' => $this->userModel->findAll(),
+            'users' => $users,
         ];
 
         return view('admin/templates/header', $data)
@@ -43,6 +46,6 @@ class User extends BaseController
         $this->userModel->delete($id);
 
         return redirect()->route('admin.users.index')
-            ->with('success', 'User deleted successfully.');
+            ->with('success', 'User has been deleted successfully.');
     }
 }

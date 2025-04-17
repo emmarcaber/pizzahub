@@ -19,14 +19,50 @@ class Category extends BaseController
 
     public function index()
     {
+        $categories = $this->categoryModel
+            ->orderBy('created_at', 'DESC')
+            ->findAll();
+
         $data = [
             'title' => 'Categories',
-            'categories' => $this->categoryModel->findAll(),
+            'categories' => $categories,
         ];
 
         return view('admin/templates/header', $data)
             . view('admin/pages/categories/index', $data)
             . view('admin/templates/footer');
+    }
+
+    public function create()
+    {
+        $data = [
+            'title' => 'Create Category',
+            'validation' => \Config\Services::validation(),
+        ];
+
+        return view('admin/templates/header', $data)
+            . view('admin/pages/categories/create', $data)
+            . view('admin/templates/footer');
+    }
+
+    public function store()
+    {
+        if (!$this->validate($this->categoryModel->validationRules)) {
+            return redirect()->back()
+                ->withInput()
+                ->with('validation', $this->validator)
+                ->with('error', 'Category has been not created.');
+        }
+
+        $data = [
+            'name' => $this->request->getPost('name'),
+            'description' => $this->request->getPost('description'),
+        ];
+
+        $this->categoryModel->save($data);
+
+        return redirect()->route('admin.categories.index')
+            ->with('success', 'Category has been created successfully!');
     }
 
     public function delete(int $id)
@@ -40,6 +76,6 @@ class Category extends BaseController
         $this->categoryModel->delete($id);
 
         return redirect()->route('admin.categories.index')
-            ->with('success', 'Category deleted successfully.');
+            ->with('success', 'Category has been deleted successfully.');
     }
 }
