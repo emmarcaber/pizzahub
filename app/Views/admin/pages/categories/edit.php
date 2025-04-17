@@ -2,7 +2,7 @@
 <ol class="breadcrumb mb-4">
     <li class="breadcrumb-item"><a href="<?= route_to('admin.index') ?>">Dashboard</a></li>
     <li class="breadcrumb-item"><a href="<?= route_to('admin.categories.index') ?>">Categories</a></li>
-    <li class="breadcrumb-item active">Create Category</li>
+    <li class="breadcrumb-item active">Edit Category</li>
 </ol>
 
 <div class="card mb-4">

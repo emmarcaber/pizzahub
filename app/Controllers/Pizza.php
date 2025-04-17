@@ -53,11 +53,11 @@ class Pizza extends BaseController
 
     public function store()
     {
-        if (!$this->validate($this->pizzaModel->validationRules)) {
+        if (! $this->validate($this->pizzaModel->validationRules)) {
             return redirect()->back()
                 ->withInput()
                 ->with('validation', $this->validator)
-                ->with('error', $this->validator->listErrors());
+                ->with('error', 'Failed to create pizza. Please try again.');
         }
 
         $data = [
@@ -80,7 +80,7 @@ class Pizza extends BaseController
             ->with('success', 'Pizza has been created successfully.');
     }
 
-    public function delete(int $id)
+    public function edit($id)
     {
         $pizza = $this->pizzaModel->find($id);
 
@@ -88,7 +88,64 @@ class Pizza extends BaseController
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
         }
 
-        if (!$this->pizzaModel->canDelete($id)) {
+        $categories = $this->categoryModel->findAll();
+
+        $data = [
+            'title' => 'Edit Pizza',
+            'pizza' => $pizza,
+            'categories' => $categories,
+            'validation' => \Config\Services::validation()
+        ];
+
+        return view('admin/templates/header', $data)
+            . view('admin/pages/pizzas/edit', $data)
+            . view('admin/templates/footer');
+    }
+
+    public function update($id)
+    {
+        $pizza = $this->pizzaModel->find($id);
+        if (! $pizza) {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+        }
+        $validationRules = $this->pizzaModel->validationRules;
+        $validationRules['name'] = "required|min_length[3]|max_length[100]|is_unique[pizzas.name,id,{$id}]";
+
+        if (! $this->validate($validationRules)) {
+            return redirect()->back()
+                ->withInput()
+                ->with('validation', $this->validator)
+                ->with('error', 'Failed to update pizza. Please try again.');
+        }
+
+        $data = [
+            'category_id' => $this->request->getPost('category_id'),
+            'name' => $this->request->getPost('name'),
+            'description' => $this->request->getPost('description'),
+            'price' => $this->request->getPost('price'),
+            'is_available' => $this->request->getPost('is_available') ?? 0
+        ];
+
+        $image = $this->request->getFile('image');
+        if ($image && $image->isValid() && ! $image->hasMoved()) {
+            $this->pizzaModel->handleImageUpload($id, $image);
+        }
+
+        $this->pizzaModel->update($id, $data);
+
+        return redirect()->route('admin.pizzas.index', [$id])
+            ->with('success', 'Pizza has been updated successfully.');
+    }
+
+    public function delete(int $id)
+    {
+        $pizza = $this->pizzaModel->find($id);
+
+        if (! $pizza) {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+        }
+
+        if (! $this->pizzaModel->canDelete($id)) {
             return redirect()->back()
                 ->with('error', 'Pizza cannot be deleted as it is associated with an order.');
         }
