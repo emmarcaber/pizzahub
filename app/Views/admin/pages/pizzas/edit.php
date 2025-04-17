@@ -1,7 +1,7 @@
 <h1 class="mt-4"><?= $title ?? '' ?></h1>
 <ol class="breadcrumb mb-4">
     <li class="breadcrumb-item"><a href="<?= route_to('admin.index') ?>">Dashboard</a></li>
-    <li class="breadcrumb-item"><a href="<?= route_to('admin.categories.index') ?>">Categories</a></li>
+    <li class="breadcrumb-item"><a href="<?= route_to('admin.pizzas.index') ?>">Pizzas</a></li>
     <li class="breadcrumb-item active">Edit Pizza</li>
 </ol>
 
@@ -74,7 +74,7 @@
                                 <label for="image" class="form-label">Pizza Image</label>
                                 <input type="file" class="form-control" id="image" name="image" accept="image/*" onchange="previewImage(event)">
                                 <small class="text-muted">Recommended size: 500x500 pixels</small>
-                                
+
                                 <div class="d-flex justify-content-start align-items-center">
                                     <?php if (!empty($pizza['image'])): ?>
                                         <div class="mt-2">
@@ -82,19 +82,20 @@
                                             <img src="<?= base_url($pizza['image']) ?>" class="img-thumbnail" style="max-width: 200px; max-height: 200px;">
                                         </div>
                                     <?php endif; ?>
-    
+
                                     <div class="mt-2" id="imagePreviewContainer" style="display: none;">
                                         <p class="mb-1">New Image Preview:</p>
                                         <img id="imagePreview" class="img-thumbnail" style="max-width: 200px; max-height: 200px;">
                                         <button type="button" class="btn btn-sm btn-danger ms-2" onclick="clearImagePreview()">
-                                            <i class="fas fa-times"></i> Remove
+                                            <i class="fas fa-times"></i>
                                         </button>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="mb-3 form-check">
-                                <input class="form-check-input" type="checkbox" id="is_available" name="is_available" value="1" <?= old('is_available', $pizza['is_available']) ? 'checked' : '' ?>>
+                                <input class="form-check-input" type="checkbox" id="is_available" name="is_available" value="1"
+                                    <?= old('is_available', $pizza['is_available']) ? 'checked' : '' ?>>
                                 <label class="form-check-label" for="is_available">Available for order</label>
                             </div>
                         </div>

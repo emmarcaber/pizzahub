@@ -47,7 +47,7 @@ class Category extends BaseController
 
     public function store()
     {
-        if (!$this->validate($this->categoryModel->validationRules)) {
+        if (!$this->validate($this->categoryModel->getCreateValidationRules())) {
             return redirect()->back()
                 ->withInput()
                 ->with('validation', $this->validator)
@@ -91,10 +91,7 @@ class Category extends BaseController
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
         }
 
-        $validationRules = $this->categoryModel->validationRules;
-        $validationRules['name'] = "required|min_length[3]|max_length[50]|is_unique[categories.name,id,{$id}]";
-
-        if (! $this->validate($validationRules)) {
+        if (! $this->validate($this->categoryModel->getUpdateValidationRules($id))) {
             return redirect()->back()
                 ->withInput()
                 ->with('validation', $this->validator)
@@ -106,7 +103,16 @@ class Category extends BaseController
             'description' => $this->request->getPost('description'),
         ];
 
-        $this->categoryModel->update($id, $data);
+        $result = $this->categoryModel->update($id, $data);
+
+        if ($result === false) {
+
+            dd($this->categoryModel->errors());
+            return redirect()->back()
+                ->withInput()
+                ->with('error', 'Failed to update category. Please try again.');
+        }
+
 
         return redirect()->route('admin.categories.index')
             ->with('success', 'Category has been updated successfully!');

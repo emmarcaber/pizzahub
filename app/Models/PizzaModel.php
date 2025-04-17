@@ -37,7 +37,7 @@ class PizzaModel extends Model
     // Validation
     protected $validationRules      = [
         'category_id' => 'required|numeric',
-        'name' => 'required|min_length[3]|max_length[100]|is_unique[pizzas.name,id,{id}]',
+        'name' => 'required|min_length[3]|max_length[100]',
         'description' => 'permit_empty',
         'price' => 'required|numeric|greater_than[0]',
     ];
@@ -71,6 +71,22 @@ class PizzaModel extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+
+    public function getCreateValidationRules(): array
+    {
+        $validationRules = $this->validationRules;
+        $validationRules['name'] = 'required|min_length[3]|max_length[100]|is_unique[pizzas.name]';
+
+        return $validationRules;
+    }
+
+    public function getUpdateValidationRules(int $id): array
+    {
+        $validationRules = $this->validationRules;
+        $validationRules['name'] = "required|min_length[3]|max_length[100]|is_unique[pizzas.name,id,$id]";
+
+        return $validationRules;
+    }
 
     public function canDelete(int $pizzaId): bool
     {

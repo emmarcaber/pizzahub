@@ -53,7 +53,7 @@ class Pizza extends BaseController
 
     public function store()
     {
-        if (! $this->validate($this->pizzaModel->validationRules)) {
+        if (! $this->validate($this->pizzaModel->getCreateValidationRules())) {
             return redirect()->back()
                 ->withInput()
                 ->with('validation', $this->validator)
@@ -65,7 +65,7 @@ class Pizza extends BaseController
             'name' => $this->request->getPost('name'),
             'description' => $this->request->getPost('description'),
             'price' => $this->request->getPost('price'),
-            'is_available' => $this->request->getPost('is_available') ?? 0
+            'is_available' => (int) $this->request->getPost('is_available') ?? 0
         ];
 
         $pizzaId = $this->pizzaModel->insert($data, true);
@@ -80,7 +80,7 @@ class Pizza extends BaseController
             ->with('success', 'Pizza has been created successfully.');
     }
 
-    public function edit($id)
+    public function edit(int $id)
     {
         $pizza = $this->pizzaModel->find($id);
 
@@ -102,16 +102,14 @@ class Pizza extends BaseController
             . view('admin/templates/footer');
     }
 
-    public function update($id)
+    public function update(int $id)
     {
         $pizza = $this->pizzaModel->find($id);
         if (! $pizza) {
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
         }
-        $validationRules = $this->pizzaModel->validationRules;
-        $validationRules['name'] = "required|min_length[3]|max_length[100]|is_unique[pizzas.name,id,{$id}]";
 
-        if (! $this->validate($validationRules)) {
+        if (! $this->validate($this->pizzaModel->getUpdateValidationRules($id))) {
             return redirect()->back()
                 ->withInput()
                 ->with('validation', $this->validator)
@@ -130,8 +128,14 @@ class Pizza extends BaseController
         if ($image && $image->isValid() && ! $image->hasMoved()) {
             $this->pizzaModel->handleImageUpload($id, $image);
         }
+        
+        $result = $this->pizzaModel->update($id, $data);
 
-        $this->pizzaModel->update($id, $data);
+        if ($result === false) {
+            return redirect()->back()
+                ->withInput()
+                ->with('error', 'Failed to update pizza. Please try again.');
+        }
 
         return redirect()->route('admin.pizzas.index', [$id])
             ->with('success', 'Pizza has been updated successfully.');

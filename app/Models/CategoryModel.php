@@ -33,7 +33,7 @@ class CategoryModel extends Model
 
     // Validation
     protected $validationRules      = [
-        'name' => 'required|min_length[3]|max_length[50]|is_unique[categories.name,id,{id}]',
+        'name' => 'required|min_length[3]|max_length[50]',
         'description' => 'required|max_length[500]'
     ];
     protected $validationMessages   = [
@@ -61,6 +61,22 @@ class CategoryModel extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+
+    public function getCreateValidatonRules(): array
+    {
+        $validationRules = $this->validationRules;
+        $validationRules['name'] = 'required|min_length[3]|max_length[50]|is_unique[categories.name]';
+
+        return $validationRules;
+    }
+
+    public function getUpdateValidationRules(int $id): array
+    {
+        $validationRules = $this->validationRules;
+        $validationRules['name'] = "required|min_length[3]|max_length[50]|is_unique[categories.name,id,$id]";
+
+        return $validationRules;
+    }
 
     public function canDelete(int $categoryId): bool
     {
