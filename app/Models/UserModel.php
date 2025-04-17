@@ -64,6 +64,14 @@ class UserModel extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
+    public function canDelete(int $userId): bool
+    {
+        $orderModel = model(OrderModel::class);
+        $orderCount = $orderModel->where('user_id', $userId)->countAllResults();
+
+        return $orderCount === 0;
+    }
+
     protected function beforeUpdate(array $data): array
     {
         $data = $this->hashPassword($data);
