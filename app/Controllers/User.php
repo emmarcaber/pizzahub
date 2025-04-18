@@ -33,6 +33,9 @@ class User extends BaseController
             . view('templates/admin/footer');
     }
 
+    /**
+     * Show the form to create a new user or registration form.
+     */
     public function create() {}
 
     public function delete(int $id)
