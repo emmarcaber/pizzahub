@@ -3,7 +3,7 @@
     <button class="btn btn-outline-danger" type="submit">Search</button>
 </form>
 
-<div class="container mt-5 py-5">
+<div class="container mt-5 pb-5">
     <div class="row">
         <?php if (empty($pizzas)): ?>
             <div class="col text-center">
