@@ -31,9 +31,9 @@ class Pizza extends BaseController
             'validation' => \Config\Services::validation(),
         ];
 
-        return view('admin/templates/header', $data)
-            . view('admin/pages/pizzas/index', $data)
-            . view('admin/templates/footer');
+        return view('templates/admin/header', $data)
+            . view('admin/pizzas/index', $data)
+            . view('templates/admin/footer');
     }
 
     public function create()
@@ -46,9 +46,9 @@ class Pizza extends BaseController
             'validation' => \Config\Services::validation(),
         ];
 
-        return view('admin/templates/header', $data)
-            . view('admin/pages/pizzas/create', $data)
-            . view('admin/templates/footer');
+        return view('templates/admin/header', $data)
+            . view('admin/pizzas/create', $data)
+            . view('templates/admin/footer');
     }
 
     public function store()
@@ -97,9 +97,9 @@ class Pizza extends BaseController
             'validation' => \Config\Services::validation()
         ];
 
-        return view('admin/templates/header', $data)
-            . view('admin/pages/pizzas/edit', $data)
-            . view('admin/templates/footer');
+        return view('templates/admin/header', $data)
+            . view('admin/pizzas/edit', $data)
+            . view('templates/admin/footer');
     }
 
     public function update(int $id)

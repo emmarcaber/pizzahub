@@ -28,9 +28,9 @@ class Category extends BaseController
             'categories' => $categories,
         ];
 
-        return view('admin/templates/header', $data)
-            . view('admin/pages/categories/index', $data)
-            . view('admin/templates/footer');
+        return view('templates/admin/header', $data)
+            . view('admin/categories/index', $data)
+            . view('templates/admin/footer');
     }
 
     public function create()
@@ -40,9 +40,9 @@ class Category extends BaseController
             'validation' => \Config\Services::validation(),
         ];
 
-        return view('admin/templates/header', $data)
-            . view('admin/pages/categories/create', $data)
-            . view('admin/templates/footer');
+        return view('templates/admin/header', $data)
+            . view('admin/categories/create', $data)
+            . view('templates/admin/footer');
     }
 
     public function store()
@@ -79,9 +79,9 @@ class Category extends BaseController
             'validation' => \Config\Services::validation(),
         ];
 
-        return view('admin/templates/header', $data)
-            . view('admin/pages/categories/edit', $data)
-            . view('admin/templates/footer');
+        return view('templates/admin/header', $data)
+            . view('admin/categories/edit', $data)
+            . view('templates/admin/footer');
     }
 
     public function update(int $id)

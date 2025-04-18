@@ -13,8 +13,8 @@ class Admin extends BaseController
             'title' => 'Dashboard',
         ];
 
-        return view('admin/templates/header', $data)
-        . view('admin/pages/index', $data)
-        . view('admin/templates/footer');
+        return view('templates/admin/header', $data)
+        . view('admin/index', $data)
+        . view('templates/admin/footer');
     }
 }

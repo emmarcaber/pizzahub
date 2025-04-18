@@ -28,9 +28,9 @@ class User extends BaseController
             'users' => $users,
         ];
 
-        return view('admin/templates/header', $data)
-            . view('admin/pages/users/index', $data)
-            . view('admin/templates/footer');
+        return view('templates/admin/header', $data)
+            . view('admin/users/index', $data)
+            . view('templates/admin/footer');
     }
 
     public function create() {}
