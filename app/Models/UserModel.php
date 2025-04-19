@@ -55,9 +55,9 @@ class UserModel extends Model
 
     // Callbacks
     protected $allowCallbacks = true;
-    protected $beforeInsert   = ['beforeInsert'];
+    protected $beforeInsert   = ['hashPassword'];
     protected $afterInsert    = [];
-    protected $beforeUpdate   = ['beforeUpdate'];
+    protected $beforeUpdate   = ['hashPassword'];
     protected $afterUpdate    = [];
     protected $beforeFind     = [];
     protected $afterFind      = [];
@@ -70,12 +70,6 @@ class UserModel extends Model
         $orderCount = $orderModel->where('user_id', $userId)->countAllResults();
 
         return $orderCount === 0;
-    }
-
-    protected function beforeUpdate(array $data): array
-    {
-        $data = $this->hashPassword($data);
-        return $data;
     }
 
     protected function hashPassword(array $data): array

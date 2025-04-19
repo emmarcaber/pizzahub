@@ -12,12 +12,20 @@ use CodeIgniter\Router\RouteCollection;
  * @var RouteCollection $routes
  */
 $routes->get('/', [Home::class, 'index'], ['as' => 'home.index']);
-$routes->get('/login', [Authenticated::class, 'login'], ['as' => 'auth.login']);
-$routes->get('/register', [Authenticated::class, 'register'], ['as' => 'auth.register']);
+
+$routes->group('', function($routes) {
+    $routes->get('register', 'Authenticated::register', ['as' => 'auth.register']);
+    $routes->post('register', 'Authenticated::attemptRegister', ['as' => 'auth.attemptRegister']);
+
+    $routes->get('login', 'Authenticated::login', ['as' => 'auth.login']);
+    $routes->post('login', 'Authenticated::attemptLogin', ['as' => 'auth.attemptLogin']);
+    
+    $routes->get('logout', 'Authenticated::logout', ['as' => 'auth.logout']);
+});
 
 
-$routes->group('admin', ['as' => 'admin.'], function ($routes) {
-    $routes->get('/', [Admin::class, 'index'], ['as' => 'admin.index']);
+$routes->group('admin', ['as' => 'admin.', 'filter' => 'auth:admin'], function ($routes) {
+    $routes->get('dashboard', [Admin::class, 'index'], ['as' => 'admin.index']);
 
     $routes->group('users', ['as' => 'users.'], function ($routes) {
         $routes->get('/', [User::class, 'index'], ['as' => 'admin.users.index']);
@@ -37,7 +45,7 @@ $routes->group('admin', ['as' => 'admin.'], function ($routes) {
     });
 
     $routes->group('pizzas', ['as' => 'pizzas.'], function ($routes) {
-        $routes->get('/', [Pizza::class, 'index'], ['as' => 'admin.pizzas.index']);
+        $routes->get('/dashboard', [Pizza::class, 'index'], ['as' => 'admin.pizzas.index']);
 
         $routes->get('create', [Pizza::class, 'create'], ['as' => 'admin.pizzas.create']);
         $routes->post('store', [Pizza::class, 'store'], ['as' => 'admin.pizzas.store']);

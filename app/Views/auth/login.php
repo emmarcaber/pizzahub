@@ -7,27 +7,19 @@
                     <p class="text-muted">Login to your account to order delicious pizzas</p>
                 </div>
                 <div class="card-body">
-                    <form id="registrationForm" action="">
+                    <form action="<?= route_to('auth.attemptLogin') ?>" method="post">
+                        <?= csrf_field() ?>
                         <div class="form-group mb-3">
-                            <label for="email">
-                                Email
-                            </label>
-                            <input type="email"
-                                class="form-control mt-2"
-                                id="email" required />
+                            <label for="email">Email</label>
+                            <input type="email" class="form-control mt-2" id="email" name="email" 
+                                   value="<?= old('email') ?>" required />
                         </div>
                         <div class="form-group mb-3">
-                            <label for="password">
-                                Password
-                            </label>
-                            <input type="password"
-                                class="form-control mt-2"
-                                id="password"
-                                required />
+                            <label for="password">Password</label>
+                            <input type="password" class="form-control mt-2" id="password" 
+                                   name="password" required />
                         </div>
-                        <button class="btn btn-warning">
-                            Login
-                        </button>
+                        <button type="submit" class="btn btn-warning">Login</button>
                     </form>
                     <p class="mt-3">
                         Don't have an account?
