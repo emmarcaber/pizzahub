@@ -45,7 +45,7 @@ $routes->group('admin', ['as' => 'admin.', 'filter' => 'auth:admin'], function (
     });
 
     $routes->group('pizzas', ['as' => 'pizzas.'], function ($routes) {
-        $routes->get('/dashboard', [Pizza::class, 'index'], ['as' => 'admin.pizzas.index']);
+        $routes->get('/', [Pizza::class, 'index'], ['as' => 'admin.pizzas.index']);
 
         $routes->get('create', [Pizza::class, 'create'], ['as' => 'admin.pizzas.create']);
         $routes->post('store', [Pizza::class, 'store'], ['as' => 'admin.pizzas.store']);

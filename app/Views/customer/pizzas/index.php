@@ -3,7 +3,7 @@
     <button class="btn btn-outline-danger" type="submit">Search</button>
 </form>
 
-<div class="container mt-5 pb-5">
+<div class="container mt-5 pb-5" id="pizzaList">
     <div class="row">
         <?php if (empty($pizzas)): ?>
             <div class="col text-center">
@@ -12,7 +12,7 @@
         <?php else: ?>
             <?php foreach ($pizzas as $pizza): ?>
                 <div class="col-md-4 mb-4">
-                    <div class="card h-100">
+                    <div class="card h-100 card-hover">
                         <img
                             src="<?= $pizza['image'] ? base_url($pizza['image']) : base_url('images/no-image-available.jpg') ?>"
                             class="card-img-top" style="width: 100%; height: 21em" alt="<?= esc($pizza['name']) ?>">

@@ -11854,3 +11854,11 @@ body {
   font-size: 0.75rem;
   border-radius: 0.375rem !important;
 }
+
+.card-hover {
+  transition: transform 0.3s ease;
+}
+.card-hover:hover {
+  transform: scale(1.05);
+  border: 1px solid var(--bs-gray-500);
+}
