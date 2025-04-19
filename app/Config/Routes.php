@@ -12,7 +12,8 @@ use CodeIgniter\Router\RouteCollection;
  * @var RouteCollection $routes
  */
 $routes->get('/', [Home::class, 'index'], ['as' => 'home.index']);
-$routes->get('/auth', [Authenticated::class, 'index']);
+$routes->get('/login', [Authenticated::class, 'login'], ['as' => 'auth.login']);
+$routes->get('/register', [Authenticated::class, 'register'], ['as' => 'auth.register']);
 
 
 $routes->group('admin', ['as' => 'admin.'], function ($routes) {
