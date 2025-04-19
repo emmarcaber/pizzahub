@@ -14,7 +14,7 @@ class AuthFilter implements FilterInterface
         
         // Check if user is not logged in
         if (!$session->get('isLoggedIn')) {
-            return redirect()->to(route_to('auth.login'))->with('error', 'Please login first');
+            return redirect()->to(route_to('auth.login'))->with('error', 'Please login first to access that page.');
         }
         
         // Check for role-based access if arguments are provided
