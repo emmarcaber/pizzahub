@@ -33,7 +33,7 @@
                 <div class="sb-sidenav-menu">
                     <div class="nav">
                         <div class="sb-sidenav-menu-heading">Resources</div>
-                        <a class="nav-link <?= uri_string() === 'admin' ? 'active' : '' ?>" href="<?= route_to('admin.index') ?>">
+                        <a class="nav-link <?= uri_string() === 'admin/dashboard' ? 'active' : '' ?>" href="<?= route_to('admin.index') ?>">
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                             Dashboard
                         </a>

@@ -11858,7 +11858,9 @@ body {
 .card-hover {
   transition: transform 0.3s ease;
 }
+
 .card-hover:hover {
   transform: scale(1.05);
   border: 1px solid var(--bs-gray-500);
 }
+
