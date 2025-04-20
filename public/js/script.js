@@ -4151,7 +4151,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
   // Auto-update when quantity changes
   document.querySelectorAll(".quantity-input").forEach((input) => {
     input.addEventListener("change", function () {
-      if (parseInt(this.value) < 1) this.value = 1;
+      if (parseInt(this.value) < 0) this.value = 1;
       this.closest("form")
         .querySelector(".update-btn")
         .classList.remove("d-none");
