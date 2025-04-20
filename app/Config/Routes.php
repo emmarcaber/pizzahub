@@ -1,11 +1,11 @@
 <?php
 
+use App\Controllers\Cart;
 use App\Controllers\Home;
 use App\Controllers\User;
 use App\Controllers\Admin;
 use App\Controllers\Pizza;
 use App\Controllers\Category;
-use App\Controllers\Authenticated;
 use CodeIgniter\Router\RouteCollection;
 
 /**
@@ -13,15 +13,16 @@ use CodeIgniter\Router\RouteCollection;
  */
 $routes->get('/', [Home::class, 'index'], ['as' => 'home.index']);
 
-$routes->group('', function($routes) {
+$routes->group('', function ($routes) {
     $routes->get('register', 'Authenticated::register', ['as' => 'auth.register']);
     $routes->post('register', 'Authenticated::attemptRegister', ['as' => 'auth.attemptRegister']);
 
     $routes->get('login', 'Authenticated::login', ['as' => 'auth.login']);
     $routes->post('login', 'Authenticated::attemptLogin', ['as' => 'auth.attemptLogin']);
-    
+
     $routes->get('logout', 'Authenticated::logout', ['as' => 'auth.logout']);
 });
+
 
 
 $routes->group('admin', ['as' => 'admin.', 'filter' => 'auth:admin'], function ($routes) {
@@ -55,4 +56,11 @@ $routes->group('admin', ['as' => 'admin.', 'filter' => 'auth:admin'], function (
 
         $routes->delete('delete/(:num)', [Pizza::class, 'delete'], ['as' => 'admin.pizzas.delete']);
     });
+});
+
+$routes->group('cart', ['as' => 'cart.'], function ($routes) {
+    $routes->get('/', [Cart::class, 'index'], ['as' => 'cart.index']);
+    $routes->get('add/(:num)', [Cart::class, 'add'], ['as' => 'cart.add']);
+    $routes->get('remove/(:num)', [Cart::class, 'remove'], ['as' => 'cart.remove']);
+    $routes->put('update/(:num)', [Cart::class, 'update'], ['as' => 'cart.update']);
 });

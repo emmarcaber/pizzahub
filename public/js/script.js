@@ -4098,70 +4098,123 @@
 });
 //# sourceMappingURL=bootstrap.bundle.min.js.map
 
-window.addEventListener('DOMContentLoaded', event => {
-
+window.addEventListener("DOMContentLoaded", (event) => {
   // Toggle the side navigation
-  const sidebarToggle = document.body.querySelector('#sidebarToggle');
+  const sidebarToggle = document.body.querySelector("#sidebarToggle");
   if (sidebarToggle) {
-      // Uncomment Below to persist sidebar toggle between refreshes
-      // if (localStorage.getItem('sb|sidebar-toggle') === 'true') {
-      //     document.body.classList.toggle('sb-sidenav-toggled');
-      // }
-      sidebarToggle.addEventListener('click', event => {
-          event.preventDefault();
-          document.body.classList.toggle('sb-sidenav-toggled');
-          localStorage.setItem('sb|sidebar-toggle', document.body.classList.contains('sb-sidenav-toggled'));
-      });
+    // Uncomment Below to persist sidebar toggle between refreshes
+    // if (localStorage.getItem('sb|sidebar-toggle') === 'true') {
+    //     document.body.classList.toggle('sb-sidenav-toggled');
+    // }
+    sidebarToggle.addEventListener("click", (event) => {
+      event.preventDefault();
+      document.body.classList.toggle("sb-sidenav-toggled");
+      localStorage.setItem(
+        "sb|sidebar-toggle",
+        document.body.classList.contains("sb-sidenav-toggled")
+      );
+    });
   }
 
-  const datatablesSimple = document.getElementById('datatablesSimple');
-    if (datatablesSimple) {
-        new simpleDatatables.DataTable(datatablesSimple);
-    }
+  const datatablesSimple = document.getElementById("datatablesSimple");
+  if (datatablesSimple) {
+    new simpleDatatables.DataTable(datatablesSimple);
+  }
 
-    setTimeout(() => {
-      const alerts = document.querySelectorAll('.alert');
-      alerts.forEach(alert => {
-          new bootstrap.Alert(alert).close();
-      });
+  setTimeout(() => {
+    const alerts = document.querySelectorAll(".alert");
+    alerts.forEach((alert) => {
+      new bootstrap.Alert(alert).close();
+    });
   }, 3000);
+
+  // Quantity controls
+  document.querySelectorAll(".quantity-btn").forEach((btn) => {
+    btn.addEventListener("click", function () {
+      const input = this.closest(".d-flex").querySelector(".quantity-input");
+      const form = this.closest("form");
+      const updateBtn = form.querySelector(".update-btn");
+
+      if (this.dataset.action === "increase") {
+        input.value = parseInt(input.value) + 1;
+      } else {
+        if (parseInt(input.value) > 1) {
+          input.value = parseInt(input.value) - 1;
+        }
+      }
+
+      // Show update button
+      updateBtn.classList.remove("d-none");
+    });
+  });
+
+  // Auto-update when quantity changes
+  document.querySelectorAll(".quantity-input").forEach((input) => {
+    input.addEventListener("change", function () {
+      if (parseInt(this.value) < 1) this.value = 1;
+      this.closest("form")
+        .querySelector(".update-btn")
+        .classList.remove("d-none");
+    });
+  });
+
+  // Submit form when update button is clicked
+  document.querySelectorAll(".update-btn").forEach((btn) => {
+    btn.addEventListener("click", function (e) {
+      e.preventDefault();
+      this.closest("form").submit();
+    });
+  });
+
+  // Load cart content via AJAX when offcanvas opens
+  const offcanvas = document.getElementById("offcanvasRight");
+  const cartUrl = offcanvas.getAttribute("data-url");
+  offcanvas.addEventListener("show.bs.offcanvas", function () {
+    fetch(cartUrl)
+      .then((response) => response.text())
+      .then((html) => {
+        document.querySelector(".offcanvas-body").innerHTML = new DOMParser()
+          .parseFromString(html, "text/html")
+          .querySelector(".offcanvas-body").innerHTML;
+      });
+  });
 });
 
 function previewImage(event) {
   const input = event.target;
-  const previewContainer = document.getElementById('imagePreviewContainer');
-  const preview = document.getElementById('imagePreview');
-  
+  const previewContainer = document.getElementById("imagePreviewContainer");
+  const preview = document.getElementById("imagePreview");
+
   if (input.files && input.files[0]) {
-      const reader = new FileReader();
-      
-      reader.onload = function(e) {
-          preview.src = e.target.result;
-          previewContainer.style.display = 'block';
-      }
-      
-      reader.readAsDataURL(input.files[0]);
-      input.disabled = true;
+    const reader = new FileReader();
+
+    reader.onload = function (e) {
+      preview.src = e.target.result;
+      previewContainer.style.display = "block";
+    };
+
+    reader.readAsDataURL(input.files[0]);
+    input.disabled = true;
   }
 }
 
 function clearImagePreview() {
-  const input = document.getElementById('image');
-  const previewContainer = document.getElementById('imagePreviewContainer');
-  const preview = document.getElementById('imagePreview');
-  
-  input.value = '';
+  const input = document.getElementById("image");
+  const previewContainer = document.getElementById("imagePreviewContainer");
+  const preview = document.getElementById("imagePreview");
+
+  input.value = "";
   input.disabled = false;
-  preview.src = '';
-  previewContainer.style.display = 'none';
+  preview.src = "";
+  previewContainer.style.display = "none";
 }
 
 function enableImageInput() {
-  const input = document.getElementById('image');
-  const previewContainer = document.getElementById('imagePreviewContainer');
-  const preview = document.getElementById('imagePreview');
-  
+  const input = document.getElementById("image");
+  const previewContainer = document.getElementById("imagePreviewContainer");
+  const preview = document.getElementById("imagePreview");
+
   input.disabled = false;
-  preview.src = '';
-  previewContainer.style.display = 'none';
+  preview.src = "";
+  previewContainer.style.display = "none";
 }

@@ -22,10 +22,10 @@
 
                 <?php if (session('isLoggedIn')): ?>
                     <div class="d-flex flex-row align-items-center justify-content-between me-3">
-                        <a href="<?= route_to('cart.index') ?>" class="btn btn-warning position-relative me-3">
+                        <button class="btn btn-warning position-relative me-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
                             <i class="fas fa-shopping-cart"></i>
-                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">1</span>
-                        </a>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"><?= $cartCount ?></span>
+                        </button>
                         <div class="d-flex flex-row align-items-center justify-content-between">
                             <div class="dropdown text-white d-inline d-lg-block">
                                 <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
