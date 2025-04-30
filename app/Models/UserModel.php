@@ -39,6 +39,7 @@ class UserModel extends Model
         'name' => 'required|min_length[3]|max_length[50]',
         'email' => 'required|valid_email|is_unique[users.email,id,{id}]',
         'password' => 'required|min_length[8]',
+        'address' => 'permit_empty',
         'role' => 'required|in_list[admin,customer]',
         'phone' => 'permit_empty|regex_match[/^[0-9]{10,15}$/]'
     ];

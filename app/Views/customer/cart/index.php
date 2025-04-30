@@ -70,7 +70,7 @@
                         <span>Total:</span>
                         <span class="fw-bold">₱<?= number_format($total, 2) ?></span>
                     </div>
-                    <a href="<?= site_url('checkout') ?>" class="btn btn-danger w-100 py-2">
+                    <a href="<?= route_to('orders.checkout') ?>" class="btn btn-danger w-100 py-2">
                         Proceed to Checkout <i class="fas fa-arrow-right ms-2"></i>
                     </a>
                 </div>

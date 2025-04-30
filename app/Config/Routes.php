@@ -4,6 +4,7 @@ use App\Controllers\Cart;
 use App\Controllers\Home;
 use App\Controllers\User;
 use App\Controllers\Admin;
+use App\Controllers\Order;
 use App\Controllers\Pizza;
 use App\Controllers\Category;
 use CodeIgniter\Router\RouteCollection;
@@ -11,9 +12,9 @@ use CodeIgniter\Router\RouteCollection;
 /**
  * @var RouteCollection $routes
  */
-$routes->get('/', [Home::class, 'index'], ['as' => 'home.index']);
-
 $routes->group('', function ($routes) {
+    $routes->get('/', [Home::class, 'index'], ['as' => 'home.index']);
+
     $routes->get('register', 'Authenticated::register', ['as' => 'auth.register']);
     $routes->post('register', 'Authenticated::attemptRegister', ['as' => 'auth.attemptRegister']);
 
@@ -58,9 +59,13 @@ $routes->group('admin', ['as' => 'admin.', 'filter' => 'auth:admin'], function (
     });
 });
 
-$routes->group('cart', ['as' => 'cart.'], function ($routes) {
+$routes->group('cart', ['as' => 'cart.', 'filter' => 'auth:customer'], function ($routes) {
     $routes->get('/', [Cart::class, 'index'], ['as' => 'cart.index']);
     $routes->get('add/(:num)', [Cart::class, 'add'], ['as' => 'cart.add']);
     $routes->get('remove/(:num)', [Cart::class, 'remove'], ['as' => 'cart.remove']);
     $routes->put('update/(:num)', [Cart::class, 'update'], ['as' => 'cart.update']);
+});
+
+$routes->group('orders', ['as' => 'orders.', 'filter' => 'auth:customer'], function ($routes) {
+    $routes->get('checkout', [Order::class, 'index'], ['as' => 'orders.checkout']);
 });

@@ -181,6 +181,8 @@ class Authenticated extends BaseController
             'id' => $user['id'],
             'name' => $user['name'],
             'email' => $user['email'],
+            'address' => $user['address'],
+            'phone' => $user['phone'],
             'role' => $user['role'],
             'isLoggedIn' => true
         ];
