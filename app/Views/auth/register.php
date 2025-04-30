@@ -34,15 +34,18 @@
                         </div>
                         <div class="form-group mb-3">
                             <label for="phone">Phone Number</label>
-                            <input type="tel" class="form-control mt-2
-                              <?= session('validation') && session('validation')->hasError('phone') ? 'is-invalid' : '' ?>"
-                                id="phone" name="phone"
-                                value="<?= old('phone') ?>" required />
-                            <?php if (session('validation') && session('validation')->hasError('phone')): ?>
-                                <div class="invalid-feedback">
-                                    <?= session('validation')->getError('phone') ?>
-                                </div>
-                            <?php endif; ?>
+                            <div class="input-group mt-2">
+                                <span class="input-group-text">+63</span>
+                                <input type="tel" class="form-control
+                                  <?= session('validation') && session('validation')->hasError('phone') ? 'is-invalid' : '' ?>"
+                                    id="phone" name="phone" maxlength="10"
+                                    value="<?= old('phone') ?>" required />
+                                <?php if (session('validation') && session('validation')->hasError('phone')): ?>
+                                    <div class="invalid-feedback">
+                                        <?= session('validation')->getError('phone') ?>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
                         </div>
                         <div class="form-group mb-3">
                             <label for="password">Password</label>
