@@ -34,4 +34,21 @@ enum StatusType
             'cancelled',
         ];
     }
+
+    public static function colors(): array
+    {
+        return [
+            self::PENDING->name => 'warning',
+            self::PREPARING->name => 'info',
+            self::BAKING->name => 'primary',
+            self::OUT_FOR_DELIVERY->name => 'success',
+            self::DELIVERED->name => 'success',
+            self::CANCELLED->name => 'danger',
+        ];
+    }
+
+    public static function getColor(string $status): string
+    {
+        return self::colors()[$status] ?? 'secondary';
+    }
 }
