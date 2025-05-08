@@ -41,14 +41,14 @@ class UserModel extends Model
         'password' => 'required|min_length[8]',
         'address' => 'permit_empty',
         'role' => 'required|in_list[admin,customer]',
-        'phone' => 'permit_empty|regex_match[/^[0-9]{10,15}$/]'
+        'phone' => 'permit_empty|regex_match[/^[0-9]{10}$/]'
     ];
     protected $validationMessages   = [
         'email' => [
             'is_unique' => 'This email is already registered.'
         ],
         'phone' => [
-            'regex_match' => 'Phone number must be between 10-15 digits.'
+            'regex_match' => 'Phone number must be 10 digits.'
         ]
     ];
     protected $skipValidation       = false;

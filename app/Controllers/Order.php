@@ -67,4 +67,19 @@ class Order extends BaseController
             return redirect()->route('auth.login')->with('error', 'An error occurred while processing your request. Please try again later.');
         }
     }
+
+    public function store()
+    {
+        $rules = [
+            'notes' => 'permit_empty|string|max_length[255]',
+            'address' => 'required|string|max_length[255]',
+        ];
+
+        if (! $this->validate($rules)) {
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('validation', $this->validator);
+        }
+    }
 }

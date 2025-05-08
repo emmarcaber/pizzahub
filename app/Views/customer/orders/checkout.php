@@ -1,4 +1,4 @@
-<form action="route_to('')" class="row container p-5 m-5">
+<form action="<?= route_to('orders.store') ?>" class="row container p-5 m-5">
     <div class="col-md-5 col-lg-4 order-md-last">
         <h4 class="d-flex justify-content-between align-items-center mb-3">
             <span class="text-primary">Your cart</span>
@@ -42,21 +42,15 @@
 
                 <div class="col-12">
                     <label for="phone" class="form-label">Contact Number</label>
-                    <div class="input-group has-validation">
+                    <div class="input-group">
                         <span class="input-group-text">+63</span>
                         <input type="text" class="form-control" id="phone" name="phone" placeholder="Contact Number" maxlength="10" value="<?= session('phone') ?>" disabled>
-                        <div class="invalid-feedback">
-                            Your username is required.
-                        </div>
                     </div>
                 </div>
 
                 <div class="col-12">
                     <label for="address" class="form-label">Address</label>
                     <input type="text" class="form-control" id="address" placeholder="1234 Main St" required>
-                    <div class="invalid-feedback">
-                        Please enter your shipping address.
-                    </div>
                 </div>
             </div>
 

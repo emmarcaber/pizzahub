@@ -44,7 +44,8 @@ class OrderModel extends Model
         'total_amount' => 'required|numeric|greater_than[0]',
         'status' => 'required|in_list[pending,preparing,baking,out_for_delivery,delivered,cancelled]',
         'delivery_address' => 'required',
-        'contact_number' => 'required|max_length[20]'
+        'contact_number' => 'required|max_length[20]',
+        'notes' => 'permit_empty',
     ];
     protected $validationMessages   = [];
     protected $skipValidation       = false;

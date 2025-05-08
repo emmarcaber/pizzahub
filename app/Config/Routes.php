@@ -68,4 +68,5 @@ $routes->group('cart', ['as' => 'cart.', 'filter' => 'auth:customer'], function 
 
 $routes->group('orders', ['as' => 'orders.', 'filter' => 'auth:customer'], function ($routes) {
     $routes->get('checkout', [Order::class, 'index'], ['as' => 'orders.checkout']);
+    $routes->post('checkout', [Order::class, 'store'], ['as' => 'orders.store']);
 });
