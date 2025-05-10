@@ -22,7 +22,9 @@
 
         <div class="card p-2">
             <div class="input-group">
-                <textarea class="form-control" placeholder="Add your order notes here (e.g. landmarks)" rows="3"></textarea>
+                <textarea
+                    class="form-control"
+                    name="notes" placeholder="Add your order notes here (e.g. landmarks)" rows="3" required></textarea>
             </div>
         </div>
     </div>
@@ -65,16 +67,16 @@
 
             <div class="my-3">
                 <div class="form-check">
-                    <input id="paypal" name="paymentMethod" type="radio" class="form-check-input" required>
-                    <label class="form-check-label" for="paypal">Cash on Delivery</label>
+                    <input id="cash_on_delivery" name="paymentMethod" type="radio" class="form-check-input" checked>
+                    <label class="form-check-label" for="cash_on_delivery">Cash on Delivery</label>
                 </div>
             </div>
 
             <hr class="my-4">
 
             <button class="w-100 btn btn-primary btn-lg" type="submit">
-            <i class="fas fa-arrow-right"></i>    
-            Continue to checkout</button>
+                <i class="fas fa-arrow-right"></i>
+                Continue to checkout</button>
         </form>
     </div>
 </form>

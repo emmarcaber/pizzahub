@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\CartModel;
+use App\Models\UserModel;
 use App\Models\OrderModel;
 use App\Models\PizzaModel;
 use App\Models\CartItemModel;
@@ -23,6 +24,8 @@ class Order extends BaseController
 
     protected $orderItemModel;
 
+    protected $userModel;
+
     protected $session;
 
     public function __construct()
@@ -32,10 +35,26 @@ class Order extends BaseController
         $this->cartItemModel = model(CartItemModel::class);
         $this->orderModel = model(OrderModel::class);
         $this->orderItemModel = model(OrderModel::class);
+        $this->userModel = model(UserModel::class);
         $this->session = \Config\Services::session();
     }
 
     public function index(): RedirectResponse|string
+    {
+        $userId = $this->session->get('id');
+        $orders = $this->orderModel->getOrdersByUserId($userId);
+
+        $data = [
+            'title' => 'My Orders',
+            'orders' => $orders,
+        ];
+
+        return view('templates/customer/header', $data)
+            . view('customer/orders/index', $data)
+            . view('templates/customer/footer');
+    }
+
+    public function checkout(): RedirectResponse|string
     {
         try {
             $pizzas = $this->pizzaModel->getPizzasWithCategory(onlyAvailable: true);
@@ -68,7 +87,7 @@ class Order extends BaseController
         }
     }
 
-    public function store()
+    public function store(): RedirectResponse
     {
         $rules = [
             'notes' => 'permit_empty|string|max_length[255]',
@@ -79,7 +98,66 @@ class Order extends BaseController
             return redirect()
                 ->back()
                 ->withInput()
-                ->with('validation', $this->validator);
+                ->with('validation', $this->validator)
+                ->with('error', 'Failed to create order. Please try again.');
         }
+
+        if ($this->request->getPost('save_info')) {
+            $user = $this->userModel->find($this->session->get('id'));
+            $user->address = $this->request->getPost('address');
+            $user->save();
+
+            $this->session->set([
+                'address' => $this->request->getPost('address'),
+            ]);
+        }
+
+        $userId = $this->session->get('id');
+        $phone = $this->session->get('phone');
+        $cart = $this->cartModel->getOrCreateCart($userId);
+        $cartItems = $this->cartItemModel->getItems($cart['id']);
+        $total = $this->cartItemModel->getCartTotal($cart['id']);
+
+        if (empty($cartItems)) {
+            return redirect()->back()->with('error', 'Your cart is empty.');
+        }
+
+        $orderData = [
+            'user_id' => $userId,
+            'total_amount' => $total,
+            'delivery_address' => $this->request->getPost('address'),
+            'contact_number' => $phone,
+            'notes' => $this->request->getPost('notes'),
+        ];
+
+        $orderId = $this->orderModel->createOrder($orderData, $cartItems);
+
+        if ($orderId) {
+            $this->cartItemModel->clearCart($cart['id']);
+            
+            return redirect()
+                ->route('orders.show', ['orderId' => $orderId])
+                ->with('success', 'Order placed successfully.');
+        } else {
+            return redirect()->back()->with('error', 'Failed to place order. Please try again.');
+        }
+    }
+
+    public function show(int $orderId): RedirectResponse|string
+    {
+        $order = $this->orderModel->getOrderWithDetails($orderId);
+
+        if (! $order) {
+            return redirect()->back()->with('error', 'Order not found.');
+        }
+
+        $data = [
+            'title' => 'Order Details',
+            'order' => $order,
+        ];
+
+        return view('templates/customer/header', $data)
+            . view('customer/orders/show', $data)
+            . view('templates/customer/footer');
     }
 }

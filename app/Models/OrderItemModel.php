@@ -67,9 +67,6 @@ class OrderItemModel extends Model
 
         foreach ($items as &$item) {
             $item['pizza'] = $pizzaModel->find($item['pizza_id']);
-
-            // Get toppings if any
-            $item['toppings'] = $this->getItemToppings($item['id']);
         }
 
         return $items;

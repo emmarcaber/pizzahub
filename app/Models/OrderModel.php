@@ -101,7 +101,6 @@ class OrderModel extends Model
             ->join('users', 'users.id = orders.user_id')
             ->find($orderId);
 
-
         if (!$order) {
             return null;
         }
