@@ -23,6 +23,18 @@ enum StatusType
         ];
     }
 
+    public static function options(): array
+    {
+        return [
+            self::PENDING->name,
+            self::PREPARING->name,
+            self::BAKING->name,
+            self::OUT_FOR_DELIVERY->name,
+            self::DELIVERED->name,
+            self::CANCELLED->name,
+        ];
+    }
+
     public static function optionsLower(): array
     {
         return [
@@ -50,5 +62,10 @@ enum StatusType
     public static function getColor(string $status): string
     {
         return self::colors()[$status] ?? 'secondary';
+    }
+
+    public static function getLabel(string $status): string
+    {
+        return strtolower(self::optionsKeyValue()[$status] ?? 'Unknown');
     }
 }

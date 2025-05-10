@@ -79,6 +79,7 @@ class OrderModel extends Model
             $orderData['order_number'] = $this->generateOrderNumber();
         }
 
+        $orderData['status'] = StatusType::getLabel(StatusType::PENDING->name);
         $orderId = $this->insert($orderData, true);
 
         if ($orderId) {

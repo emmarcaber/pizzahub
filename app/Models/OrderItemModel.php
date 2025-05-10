@@ -7,7 +7,7 @@ use App\Models\PizzaModel;
 
 class OrderItemModel extends Model
 {
-    protected $table            = 'orderitems';
+    protected $table            = 'order_items';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';

@@ -1,4 +1,5 @@
-<form action="<?= route_to('orders.store') ?>" class="row container p-5 m-5">
+<form action="<?= route_to('orders.store') ?>" method="POST" class="row container p-5 m-5">
+    <?= csrf_field() ?>
     <div class="col-md-5 col-lg-4 order-md-last">
         <h4 class="d-flex justify-content-between align-items-center mb-3">
             <span class="text-primary">Your cart</span>
@@ -23,8 +24,13 @@
         <div class="card p-2">
             <div class="input-group">
                 <textarea
-                    class="form-control"
-                    name="notes" placeholder="Add your order notes here (e.g. landmarks)" rows="3" required></textarea>
+                    class="form-control <?= session('validation') && session('validation')->hasError('notes') ? 'is-invalid' : '' ?>"
+                    name="notes" placeholder="Add your order notes here (e.g. landmarks)" rows="3" required><?= old('notes') ?></textarea>
+                <?php if (session('validation') && session('validation')->hasError('notes')): ?>
+                    <div class="invalid-feedback">
+                        <?= session('validation')->getError('notes') ?>
+                    </div>
+                <?php endif; ?>
             </div>
         </div>
     </div>
@@ -52,7 +58,17 @@
 
                 <div class="col-12">
                     <label for="address" class="form-label">Address</label>
-                    <input type="text" class="form-control" id="address" placeholder="1234 Main St" required>
+                    <input type="text"
+                        class="form-control <?= session('validation') && session('validation')->hasError('address') ? 'is-invalid' : '' ?>"
+                        id="address"
+                        name="address"
+                        placeholder="1234 Main St"
+                        required>
+                    <?php if (session('validation') && session('validation')->hasError('address')): ?>
+                        <div class="invalid-feedback">
+                            <?= session('validation')->getError('address') ?>
+                        </div>
+                    <?php endif; ?>
                 </div>
             </div>
 
@@ -74,7 +90,7 @@
 
             <hr class="my-4">
 
-            <button class="w-100 btn btn-primary btn-lg" type="submit">
+            <button class="w-100 btn btn-primary btn-lg" type="submit" onclick="return confirm('Are you sure you want to place this order?')">
                 <i class="fas fa-arrow-right"></i>
                 Continue to checkout</button>
         </form>

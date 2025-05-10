@@ -12,7 +12,7 @@
                 <div class="text-center my-4">
                     <i class="fas fa-shopping-cart fa-3x mb-3 text-light"></i>
                     <p class="text-light">Your cart is empty.</p>
-                    <a href="#pizzaList" class="btn btn-outline-dark">Browse Pizzas</a>
+                    <a href="<?= route_to('home.index') . '#pizzaList' ?>" class="btn btn-outline-dark">Browse Pizzas</a>
                 </div>
             <?php else: ?>
                 <div class="cart-items" style="max-height: 60vh; overflow-y: auto;">

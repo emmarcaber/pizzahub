@@ -102,17 +102,18 @@ class Order extends BaseController
                 ->with('error', 'Failed to create order. Please try again.');
         }
 
+        $userId = $this->session->get('id');
+
         if ($this->request->getPost('save_info')) {
-            $user = $this->userModel->find($this->session->get('id'));
-            $user->address = $this->request->getPost('address');
-            $user->save();
+            $this->userModel->update($userId, [
+                'address' => $this->request->getPost('address'),
+            ]);
 
             $this->session->set([
                 'address' => $this->request->getPost('address'),
             ]);
         }
 
-        $userId = $this->session->get('id');
         $phone = $this->session->get('phone');
         $cart = $this->cartModel->getOrCreateCart($userId);
         $cartItems = $this->cartItemModel->getItems($cart['id']);
@@ -134,9 +135,9 @@ class Order extends BaseController
 
         if ($orderId) {
             $this->cartItemModel->clearCart($cart['id']);
-            
+
             return redirect()
-                ->route('orders.show', ['orderId' => $orderId])
+                ->route('orders.show', [$orderId])
                 ->with('success', 'Order placed successfully.');
         } else {
             return redirect()->back()->with('error', 'Failed to place order. Please try again.');
@@ -146,17 +147,33 @@ class Order extends BaseController
     public function show(int $orderId): RedirectResponse|string
     {
         $order = $this->orderModel->getOrderWithDetails($orderId);
+        $pizzas = $this->pizzaModel->getPizzasWithCategory(onlyAvailable: true);
 
         if (! $order) {
             return redirect()->back()->with('error', 'Order not found.');
         }
 
+        if ($this->session->get('isLoggedIn')) {
+            $userId = $this->session->get('id');
+            $cart = $this->cartModel->getOrCreateCart($userId);
+            $cartItems = $this->cartItemModel->getItems($cart['id']);
+            $total = $this->cartItemModel->getCartTotal($cart['id']);
+        } else {
+            $cartItems = [];
+            $total = 0;
+        }
+
         $data = [
             'title' => 'Order Details',
             'order' => $order,
+            'pizzas' => $pizzas,
+            'cartItems' => $cartItems,
+            'cartCount' => count($cartItems),
+            'total' => $total,
         ];
 
         return view('templates/customer/header', $data)
+            . view('customer/cart/index', $data)
             . view('customer/orders/show', $data)
             . view('templates/customer/footer');
     }
