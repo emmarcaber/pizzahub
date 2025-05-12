@@ -80,6 +80,7 @@ $routes->group('admin', ['as' => 'admin.', 'filter' => 'auth:admin'], function (
     $routes->group('orders', ['as' => 'orders.'], function ($routes) {
         $routes->get('/', [AdminOrder::class, 'index'], ['as' => 'admin.orders.index']);
         $routes->get('(:num)', [AdminOrder::class, 'show'], ['as' => 'admin.orders.show']);
+        $routes->put('update_status/(:num)', [AdminOrder::class, 'updateStatus'], ['as' => 'admin.orders.update_status']);
     });
 });
 

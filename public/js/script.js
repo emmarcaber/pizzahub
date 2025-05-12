@@ -4218,3 +4218,37 @@ function enableImageInput() {
   preview.src = "";
   previewContainer.style.display = "none";
 }
+
+function toggleSubmitButton(selectElement) {
+  const orderId = selectElement.getAttribute("data-order-id");
+  const originalStatus = document.querySelector(
+    `#statusUpdateForm-${orderId} input[name="original_status"]`
+  ).value;
+  const submitBtn = document.getElementById(`submitStatusBtn-${orderId}`);
+
+  // Show submit button only if status has changed
+  if (selectElement.value !== originalStatus) {
+    submitBtn.classList.remove("d-none");
+  } else {
+    submitBtn.classList.add("d-none");
+  }
+}
+
+function confirmStatusUpdate(event, orderId) {
+  event.preventDefault();
+
+  const selectElement = document.getElementById(`statusSelect-${orderId}`);
+  const form = document.getElementById(`statusUpdateForm-${orderId}`);
+
+  // Confirm status change
+  if (
+    confirm(
+      `Are you sure you want to change the order status to ${selectElement.value}?`
+    )
+  ) {
+    // Optional: You can add more complex logic here if needed
+    form.submit();
+  }
+
+  return false;
+}

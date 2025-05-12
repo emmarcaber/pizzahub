@@ -14,24 +14,12 @@ enum StatusType
     public static function optionsKeyValue(): array
     {
         return [
-            self::PENDING->name => 'Pending',
-            self::PREPARING->name => 'Preparing',
-            self::BAKING->name => 'Baking',
-            self::OUT_FOR_DELIVERY->name => 'Out for Delivery',
-            self::DELIVERED->name => 'Delivered',
-            self::CANCELLED->name => 'Cancelled',
-        ];
-    }
-
-    public static function options(): array
-    {
-        return [
-            self::PENDING->name,
-            self::PREPARING->name,
-            self::BAKING->name,
-            self::OUT_FOR_DELIVERY->name,
-            self::DELIVERED->name,
-            self::CANCELLED->name,
+            'pending' => 'Pending',
+            'preparing' => 'Preparing',
+            'baking' => 'Baking',
+            'out_for_delivery' => 'Out for Delivery',
+            'delivered' => 'Delivered',
+            'cancelled' => 'Cancelled',
         ];
     }
 
