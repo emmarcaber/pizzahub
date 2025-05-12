@@ -16,7 +16,7 @@ class UsersSeeder extends Seeder
                 'password' => password_hash('hello123!', PASSWORD_DEFAULT),
                 'role' => 'admin',
                 'address' => '123 Admin Street',
-                'phone' => '1234567890',
+                'phone' => '9123456789',
             ],
             [
                 'name' => 'Customer',
@@ -24,7 +24,7 @@ class UsersSeeder extends Seeder
                 'password' => password_hash('hello123!', PASSWORD_DEFAULT),
                 'role' => 'customer',
                 'address' => '456 Customer Avenue',
-                'phone' => '0987654321',
+                'phone' => '9876543211',
             ]
         ];
 

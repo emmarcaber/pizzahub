@@ -11,10 +11,12 @@ use App\Types\StatusType;
             <h2>Order Details</h2>
             <div class="row">
                 <div class="col-md-12">
-                    <a href="<?= route_to('orders.index') ?>" class="btn btn-sm btn-secondary text-white">Back to Orders</a>
+                    <a href="<?= route_to('orders.index') ?>" class="btn btn-sm btn-secondary text-white">
+                        &lt; Back to Orders</a>
                     <?php if ($isOrderCancellable): ?>
                         <a href="<?= route_to('orders.cancel', $order['id']) ?>" class="btn btn-sm btn-danger"
-                        onclick="return confirm('Are you sure you want to cancel this order?');">Cancel Order</a>
+                        onclick="return confirm('Are you sure you want to cancel this order?');">
+                        <i class="fas fa-ban"></i> Cancel Order</a>
                     <?php endif; ?>
                 </div>
             </div>

@@ -55,7 +55,9 @@
                             <div class="sb-nav-link-icon"><i class="fas fa-pizza-slice"></i></div>
                             Pizzas
                         </a>
-                        <a class="nav-link" href="index.html">
+                        <a class="nav-link
+                         <?= str_starts_with(uri_string(), 'admin/orders') ? 'active' : '' ?>"
+                          href="<?= route_to('admin.orders.index') ?>">
                             <div class="sb-nav-link-icon"><i class="fas fa-clipboard-list"></i></div>
                             Orders
                         </a>

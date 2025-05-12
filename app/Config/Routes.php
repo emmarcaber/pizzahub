@@ -5,6 +5,7 @@ use App\Controllers\Home;
 use App\Controllers\User;
 use App\Controllers\Admin;
 use App\Controllers\Order;
+use App\Controllers\Admin\Order as AdminOrder;
 use App\Controllers\Pizza;
 use App\Controllers\Category;
 use CodeIgniter\Router\RouteCollection;
@@ -74,6 +75,11 @@ $routes->group('admin', ['as' => 'admin.', 'filter' => 'auth:admin'], function (
         $routes->put('update/(:num)', [Pizza::class, 'update'], ['as' => 'admin.pizzas.update']);
 
         $routes->delete('delete/(:num)', [Pizza::class, 'delete'], ['as' => 'admin.pizzas.delete']);
+    });
+
+    $routes->group('orders', ['as' => 'orders.'], function ($routes) {
+        $routes->get('/', [AdminOrder::class, 'index'], ['as' => 'admin.orders.index']);
+        $routes->get('(:num)', [AdminOrder::class, 'show'], ['as' => 'admin.orders.show']);
     });
 });
 

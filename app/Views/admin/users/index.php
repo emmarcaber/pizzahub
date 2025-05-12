@@ -34,7 +34,7 @@
                                     <td><?= esc($user['email']) ?></td>
                                     <td>
                                         <span class="badge bg-<?= $user['role'] === 'admin' ? 'danger' : 'secondary' ?>">
-                                            <?= esc($user['role']) ?>
+                                            <?= strtoupper(esc($user['role'])) ?>
                                         </span>
                                     </td>
                                     <td><?= esc($user['phone']) ?></td>

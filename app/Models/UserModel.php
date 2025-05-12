@@ -90,16 +90,6 @@ class UserModel extends Model
         return $user;
     }
 
-    public function updateProfile(int $id, array $data)
-    {
-        // Remove password if present
-        if (isset($data['password'])) {
-            unset($data['password']);
-        }
-
-        return $this->update($id, $data);
-    }
-
     public function changePassword(int $id, string $newPassword): bool
     {
         return $this->update($id, ['password' => $newPassword]);
