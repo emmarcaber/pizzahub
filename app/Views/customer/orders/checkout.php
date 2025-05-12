@@ -62,6 +62,7 @@
                         class="form-control <?= session('validation') && session('validation')->hasError('address') ? 'is-invalid' : '' ?>"
                         id="address"
                         name="address"
+                        value="<?= old('address', session('address')) ?>"
                         placeholder="1234 Main St"
                         required>
                     <?php if (session('validation') && session('validation')->hasError('address')): ?>

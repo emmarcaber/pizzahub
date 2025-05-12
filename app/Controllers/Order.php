@@ -4,9 +4,11 @@ namespace App\Controllers;
 
 use App\Models\CartModel;
 use App\Models\UserModel;
+use App\Types\StatusType;
 use App\Models\OrderModel;
 use App\Models\PizzaModel;
 use App\Models\CartItemModel;
+use App\Models\OrderItemModel;
 use App\Controllers\BaseController;
 use CodeIgniter\HTTP\RedirectResponse;
 
@@ -15,17 +17,11 @@ class Order extends BaseController
     protected $helpers = ['form', 'url'];
 
     protected $pizzaModel;
-
     protected $cartModel;
-
     protected $cartItemModel;
-
     protected $orderModel;
-
     protected $orderItemModel;
-
     protected $userModel;
-
     protected $session;
 
     public function __construct()
@@ -34,67 +30,45 @@ class Order extends BaseController
         $this->cartModel = model(CartModel::class);
         $this->cartItemModel = model(CartItemModel::class);
         $this->orderModel = model(OrderModel::class);
-        $this->orderItemModel = model(OrderModel::class);
+        $this->orderItemModel = model(OrderItemModel::class);
         $this->userModel = model(UserModel::class);
         $this->session = \Config\Services::session();
     }
 
+    /**
+     * Display list of user orders
+     */
     public function index(): RedirectResponse|string
     {
         $userId = $this->session->get('id');
-        $orders = $this->orderModel->getOrdersByUserId($userId);
+        $orders = $this->orderModel->getOrdersByUser($userId);
+        $data = $this->prepareCommonData('My Orders');
+        $data['orders'] = $orders;
 
-        $data = [
-            'title' => 'My Orders',
-            'orders' => $orders,
-        ];
-
-        return view('templates/customer/header', $data)
-            . view('customer/orders/index', $data)
-            . view('templates/customer/footer');
+        return $this->renderCustomerView('customer/orders/index', $data);
     }
 
+    /**
+     * Display checkout page
+     */
     public function checkout(): RedirectResponse|string
     {
         try {
-            $pizzas = $this->pizzaModel->getPizzasWithCategory(onlyAvailable: true);
-
-            if ($this->session->get('isLoggedIn')) {
-                $userId = $this->session->get('id');
-                $cart = $this->cartModel->getOrCreateCart($userId);
-                $cartItems = $this->cartItemModel->getItems($cart['id']);
-                $total = $this->cartItemModel->getCartTotal($cart['id']);
-            } else {
-                $cartItems = [];
-                $total = 0;
-            }
-
-            $data = [
-                'title' => 'Checkout',
-                'pizzas' => $pizzas,
-                'cartItems' => $cartItems,
-                'cartCount' => count($cartItems),
-                'total' => $total,
-            ];
-
-            return view('templates/customer/header', $data)
-                . view('customer/cart/index', $data)
-                . view('customer/orders/checkout', $data)
-                . view('templates/customer/footer');
+            $data = $this->prepareCommonData('Checkout');
+            
+            return $this->renderCustomerView('customer/orders/checkout', $data, 'customer/cart/index');
         } catch (\Exception $e) {
-            log_message('error', 'Error fetching pizzas: ' . $e->getMessage());
-            return redirect()->route('auth.login')->with('error', 'An error occurred while processing your request. Please try again later.');
+            log_message('error', 'Error in checkout: ' . $e->getMessage());
+            return redirect()->to('/auth/login')->with('error', 'An error occurred. Please try again later.');
         }
     }
 
+    /**
+     * Process order creation
+     */
     public function store(): RedirectResponse
     {
-        $rules = [
-            'notes' => 'permit_empty|string|max_length[255]',
-            'address' => 'required|string|max_length[255]',
-        ];
-
-        if (! $this->validate($rules)) {
+        if (!$this->validateOrderData()) {
             return redirect()
                 ->back()
                 ->withInput()
@@ -103,18 +77,11 @@ class Order extends BaseController
         }
 
         $userId = $this->session->get('id');
+        
+        // Save user address if requested
+        $this->saveUserAddressIfRequested($userId);
 
-        if ($this->request->getPost('save_info')) {
-            $this->userModel->update($userId, [
-                'address' => $this->request->getPost('address'),
-            ]);
-
-            $this->session->set([
-                'address' => $this->request->getPost('address'),
-            ]);
-        }
-
-        $phone = $this->session->get('phone');
+        // Get cart data
         $cart = $this->cartModel->getOrCreateCart($userId);
         $cartItems = $this->cartItemModel->getItems($cart['id']);
         $total = $this->cartItemModel->getCartTotal($cart['id']);
@@ -123,58 +90,122 @@ class Order extends BaseController
             return redirect()->back()->with('error', 'Your cart is empty.');
         }
 
-        $orderData = [
-            'user_id' => $userId,
-            'total_amount' => $total,
-            'delivery_address' => $this->request->getPost('address'),
-            'contact_number' => $phone,
-            'notes' => $this->request->getPost('notes'),
-        ];
-
+        // Create the order
+        $orderData = $this->prepareOrderData($userId, $total);
         $orderId = $this->orderModel->createOrder($orderData, $cartItems);
 
         if ($orderId) {
             $this->cartItemModel->clearCart($cart['id']);
-
-            return redirect()
-                ->route('orders.show', [$orderId])
+            return redirect()->to("/orders/$orderId")
                 ->with('success', 'Order placed successfully.');
         } else {
             return redirect()->back()->with('error', 'Failed to place order. Please try again.');
         }
     }
 
+    /**
+     * Display order details
+     */
     public function show(int $orderId): RedirectResponse|string
     {
         $order = $this->orderModel->getOrderWithDetails($orderId);
-        $pizzas = $this->pizzaModel->getPizzasWithCategory(onlyAvailable: true);
 
-        if (! $order) {
+        if (!$order) {
             return redirect()->back()->with('error', 'Order not found.');
         }
+
+        $data = $this->prepareCommonData('Order Details');
+        $data['order'] = $order;
+        $data['orderItemsCount'] = $this->orderModel->getOrderItemTotalQuantity($orderId);
+        $data['isOrderCancellable'] = $order['status'] === StatusType::getLabel(StatusType::PENDING->name);
+
+        return $this->renderCustomerView('customer/orders/show', $data, 'customer/cart/index');
+    }
+
+    /**
+     * Prepare common data needed for most views
+     */
+    private function prepareCommonData(string $title): array
+    {
+        $pizzas = $this->pizzaModel->getPizzasWithCategory(onlyAvailable: true);
+        $cartItems = [];
+        $total = 0;
 
         if ($this->session->get('isLoggedIn')) {
             $userId = $this->session->get('id');
             $cart = $this->cartModel->getOrCreateCart($userId);
             $cartItems = $this->cartItemModel->getItems($cart['id']);
             $total = $this->cartItemModel->getCartTotal($cart['id']);
-        } else {
-            $cartItems = [];
-            $total = 0;
         }
 
-        $data = [
-            'title' => 'Order Details',
-            'order' => $order,
+        return [
+            'title' => $title,
             'pizzas' => $pizzas,
             'cartItems' => $cartItems,
             'cartCount' => count($cartItems),
             'total' => $total,
         ];
+    }
 
-        return view('templates/customer/header', $data)
-            . view('customer/cart/index', $data)
-            . view('customer/orders/show', $data)
-            . view('templates/customer/footer');
+    /**
+     * Render a view with customer template
+     */
+    private function renderCustomerView(string $view, array $data, ?string $extraView = null): string
+    {
+        $output = view('templates/customer/header', $data);
+        
+        if ($extraView) {
+            $output .= view($extraView, $data);
+        }
+        
+        $output .= view($view, $data);
+        $output .= view('templates/customer/footer');
+        
+        return $output;
+    }
+
+    /**
+     * Validate order form data
+     */
+    private function validateOrderData(): bool
+    {
+        $rules = [
+            'notes' => 'permit_empty|string|max_length[255]',
+            'address' => 'required|string|max_length[255]',
+        ];
+
+        return $this->validate($rules);
+    }
+
+    /**
+     * Save user address if requested
+     */
+    private function saveUserAddressIfRequested(int $userId): void
+    {
+        if ($this->request->getPost('save_info')) {
+            $address = $this->request->getPost('address');
+            
+            $this->userModel->update($userId, [
+                'address' => $address,
+            ]);
+
+            $this->session->set([
+                'address' => $address,
+            ]);
+        }
+    }
+
+    /**
+     * Prepare order data for creation
+     */
+    private function prepareOrderData(int $userId, float $total): array
+    {
+        return [
+            'user_id' => $userId,
+            'total_amount' => $total,
+            'delivery_address' => $this->request->getPost('address'),
+            'contact_number' => $this->session->get('phone'),
+            'notes' => $this->request->getPost('notes'),
+        ];
     }
 }

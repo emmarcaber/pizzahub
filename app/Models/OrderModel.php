@@ -98,7 +98,7 @@ class OrderModel extends Model
 
     public function getOrderWithDetails(int $orderId): array|object|null
     {
-        $order = $this->select('orders.*, users.name as customer_name, users.email as customer_email')
+        $order = $this->select('orders.*, users.name as customer_name, users.email as customer_email, users.phone as customer_phone')
             ->join('users', 'users.id = orders.user_id')
             ->find($orderId);
 
@@ -147,14 +147,20 @@ class OrderModel extends Model
         $order = $this->find($orderId);
         $status = $order['status'] ?? null;
 
-        if (
-            !$order
-            || $status !== StatusType::PENDING->name
-            || $status !== StatusType::PREPARING->name
-        ) {
+        if (! $order || $status !== StatusType::getLabel(StatusType::PENDING->name)) {
             return false;
         }
 
-        return $this->update($orderId, ['status' => StatusType::CANCELLED->name]);
+        return $this->update($orderId, ['status' => StatusType::getLabel(StatusType::CANCELLED->name)]);
+    }
+
+    public function getOrderItemTotalQuantity(int $orderId): int
+    {
+        $orderItemModel = new OrderItemModel();
+        return $orderItemModel->selectSum('quantity')
+            ->where('order_id', $orderId)
+            ->get()
+            ->getRow()
+            ->quantity ?? 0;
     }
 }

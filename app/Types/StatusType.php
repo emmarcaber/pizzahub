@@ -47,6 +47,18 @@ enum StatusType
         ];
     }
 
+    public static function descriptions(): array
+    {
+        return [
+            'pending' => 'Your order is pending.',
+            'preparing' => 'Your order is being prepared.',
+            'baking' => 'Your order is being baked.',
+            'out_for_delivery' => 'Your order is out for delivery.',
+            'delivered' => 'Your order has been delivered.',
+            'cancelled' => 'Your order has been cancelled.',
+        ];
+    }
+
     public static function colors(): array
     {
         return [
@@ -67,5 +79,10 @@ enum StatusType
     public static function getLabel(string $status): string
     {
         return strtolower(self::optionsKeyValue()[$status] ?? 'Unknown');
+    }
+
+    public static function getDescription(string $status): string
+    {
+        return self::descriptions()[$status] ?? 'Unknown status';
     }
 }
