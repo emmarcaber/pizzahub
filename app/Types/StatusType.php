@@ -62,12 +62,12 @@ enum StatusType
     public static function colors(): array
     {
         return [
-            self::PENDING->name => 'warning',
-            self::PREPARING->name => 'info',
-            self::BAKING->name => 'primary',
-            self::OUT_FOR_DELIVERY->name => 'success',
-            self::DELIVERED->name => 'success',
-            self::CANCELLED->name => 'danger',
+            'pending' => 'warning',
+            'preparing' => 'info',
+            'baking' => 'primary',
+            'out_for_delivery' => 'primary',
+            'delivered' => 'success',
+            'cancelled' => 'danger',
         ];
     }
 

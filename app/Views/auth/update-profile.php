@@ -6,8 +6,8 @@
             <h4 class="fw-bold m-0">Update Profile</h4>
         </div>
         <form class="card-body" action="" method="POST">
-            <!-- CSRF Token -->
-            <input type="hidden" name="csrf_token" value="<?= csrf_token() ?>">
+            <?= csrf_field() ?>
+            <input type="hidden" name="_method" value="PUT">
 
             <div class="form-group mb-3">
                 <label for="name" class="form-label">Full Name</label>
@@ -44,8 +44,8 @@
             <h4 class="fw-bold m-0">Change Password</h4>
         </div>
         <form class="card-body" action="<?= route_to('auth.changePassword') ?>" method="POST">
-            <!-- CSRF Token -->
-            <input type="hidden" name="csrf_token" value="<?= csrf_token() ?>">
+            <?= csrf_field() ?>
+            <input type="hidden" name="_method" value="PUT">
 
             <div class="form-group mb-3">
                 <label for="current_password" class="form-label">Current Password</label>

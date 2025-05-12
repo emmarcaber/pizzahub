@@ -123,6 +123,24 @@ class Order extends BaseController
     }
 
     /**
+     * Cancel an order
+     */
+    public function cancel(int $orderId): RedirectResponse
+    {
+        $order = $this->orderModel->find($orderId);
+
+        if (! $order) {
+            return redirect()->back()->with('error', 'Order not found.');
+        }
+
+        $result = $this->orderModel->cancelOrder($orderId);
+
+        return $result
+            ? redirect()->back()->with('success', 'Order cancelled successfully.')
+            : redirect()->back()->with('error', 'Failed to cancel order. Please try again.');
+    }
+
+    /**
      * Prepare common data needed for most views
      */
     private function prepareCommonData(string $title): array

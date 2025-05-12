@@ -13,7 +13,8 @@ use App\Types\StatusType;
                 <div class="col-md-12">
                     <a href="<?= route_to('orders.index') ?>" class="btn btn-sm btn-secondary text-white">Back to Orders</a>
                     <?php if ($isOrderCancellable): ?>
-                        <a href="<?= route_to('orders.cancel', $order['id']) ?>" class="btn btn-sm btn-danger">Cancel Order</a>
+                        <a href="<?= route_to('orders.cancel', $order['id']) ?>" class="btn btn-sm btn-danger"
+                        onclick="return confirm('Are you sure you want to cancel this order?');">Cancel Order</a>
                     <?php endif; ?>
                 </div>
             </div>
@@ -65,7 +66,7 @@ use App\Types\StatusType;
         </div>
     </div>
 
-    <div class="row container d-flex justify-content-around">
+    <div class="container d-flex justify-content-around align-items-center">
         <div class="card col-md-5 col-lg-5 p-1">
             <div class="card-body d-flex flex-column gap-1">
                 <span class="fw-bold"><?= $order['customer_name'] ?></span>
