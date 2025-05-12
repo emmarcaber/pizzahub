@@ -204,7 +204,7 @@ class Authenticated extends BaseController
                 ->with('validation', $this->validator);
         }
 
-        if (!$this->userModel->update($userId, ['password' => password_hash($newPassword, PASSWORD_DEFAULT)])) {
+        if (! $this->userModel->changePassword($userId, $newPassword)) {
             return redirect()
                 ->back()
                 ->withInput()
