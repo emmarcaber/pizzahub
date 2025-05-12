@@ -87,6 +87,6 @@ class Cart extends BaseController
 
         $quantity = $this->request->getPost('quantity');
         $this->cartItemModel->updateQuantity($itemId, $quantity);
-        return redirect()->route('home.index')->with('success', 'Cart updated.');
+        return redirect()->back()->with('success', 'Cart updated.');
     }
 }

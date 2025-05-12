@@ -32,8 +32,8 @@
                                     Welcome, <?= session('name') ?>! <i class="fas fa-fw"></i>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <li><a class="dropdown-item" href="#"><i class="fas fa-user-pen"></i> Profile</a></li>
-                                    <li><a class="dropdown-item" href="#"><i class="fas fa-cart-plus"></i> Orders</a></li>
+                                    <li><a class="dropdown-item" href="<?= route_to('auth.updateProfile') ?>"><i class="fas fa-user-pen"></i> Profile</a></li>
+                                    <li><a class="dropdown-item" href="<?= route_to('orders.index', session('id')) ?>"><i class="fas fa-cart-plus"></i> Orders</a></li>
                                     <li><a class="dropdown-item" href="<?= route_to('auth.logout') ?>"><i class="fas fa-right-from-bracket"></i> Logout</a></li>
                                 </ul>
                             </div>

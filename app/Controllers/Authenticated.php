@@ -2,19 +2,31 @@
 
 namespace App\Controllers;
 
-use App\Controllers\BaseController;
+use App\Models\CartModel;
 use App\Models\UserModel;
+use App\Models\PizzaModel;
+use App\Models\CartItemModel;
+use App\Controllers\BaseController;
 use CodeIgniter\HTTP\RedirectResponse;
 
 class Authenticated extends BaseController
 {
     protected $userModel;
+
+    protected $pizzaModel;
+
+    protected $cartModel;
+
+    protected $cartItemModel;
     protected $validation;
     protected $session;
 
     public function __construct()
     {
-        $this->userModel = new UserModel();
+        $this->userModel = model(UserModel::class);
+        $this->pizzaModel = model(PizzaModel::class);
+        $this->cartModel = model(CartModel::class);
+        $this->cartItemModel = model(CartItemModel::class);
         $this->validation = \Config\Services::validation();
         $this->session = \Config\Services::session();
     }
@@ -82,6 +94,34 @@ class Authenticated extends BaseController
 
         return view('templates/customer/header', $data)
             . view('auth/register', $data)
+            . view('templates/customer/footer');
+    }
+
+    public function updateProfile(): RedirectResponse|string
+    {
+        $pizzas = $this->pizzaModel->getPizzasWithCategory(onlyAvailable: true);
+        $cartItems = [];
+        $total = 0;
+
+        if ($this->session->get('isLoggedIn')) {
+            $userId = $this->session->get('id');
+            $cart = $this->cartModel->getOrCreateCart($userId);
+            $cartItems = $this->cartItemModel->getItems($cart['id']);
+            $total = $this->cartItemModel->getCartTotal($cart['id']);
+        }
+
+        $data = [
+            'title' => 'Update Profile',
+            'validation' => $this->validation,
+            'user' => $this->userModel->find($this->session->get('id')),
+            'pizzas' => $pizzas,
+            'cartItems' => $cartItems,
+            'cartCount' => count($cartItems),
+            'total' => $total,
+        ];
+
+        return view('templates/customer/header', $data)
+            . view('auth/update-profile', $data)
             . view('templates/customer/footer');
     }
 

@@ -22,6 +22,8 @@ $routes->group('', function ($routes) {
     $routes->post('login', 'Authenticated::attemptLogin', ['as' => 'auth.attemptLogin']);
 
     $routes->get('logout', 'Authenticated::logout', ['as' => 'auth.logout']);
+
+    $routes->get('update-profile', 'Authenticated::updateProfile', ['as' => 'auth.updateProfile', 'filter' => 'auth:customer']);
 });
 
 

@@ -3,6 +3,8 @@
 use App\Types\StatusType;
 
 ?>
+
+
 <div class="container mt-5 py-5 w-100">
     <div class="row my-2">
         <div class="col-md-12 d-flex justify-content-between align-items-center">
@@ -64,14 +66,20 @@ use App\Types\StatusType;
     </div>
 
     <div class="row container d-flex justify-content-around">
-        <div class="card col-md-5 col-lg-4 p-0">
+        <div class="card col-md-5 col-lg-5 p-1">
             <div class="card-body d-flex flex-column gap-1">
                 <span class="fw-bold"><?= $order['customer_name'] ?></span>
                 <span><?= $order['delivery_address'] ?></span>
                 <span class="mt-2"><?= $order['customer_email'] ?></span>
                 <span>+63<?= $order['customer_phone'] ?></span>
             </div>
+            <div class="card-footer d-flex flex-column gap-1">
+                <span>Notes:</span>
+                <span class="fw-bold"><?= $order['notes'] ? esc($order['notes']) : 'No special instructions' ?></span>
+            </div>
         </div>
+
+
         <div class="card col-md-7 col-lg-6 p-0">
             <div class="card-body">
                 <h5 class="mt-2">Total Summary</h5>
@@ -91,3 +99,5 @@ use App\Types\StatusType;
                 <span class="fw-bold">&#8369;<?= esc(number_format($order['total_amount'] + 30, 2)) ?></span>
             </div>
         </div>
+    </div>
+</div>

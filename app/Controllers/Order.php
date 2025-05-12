@@ -45,7 +45,7 @@ class Order extends BaseController
         $data = $this->prepareCommonData('My Orders');
         $data['orders'] = $orders;
 
-        return $this->renderCustomerView('customer/orders/index', $data);
+        return $this->renderCustomerView('customer/orders/index', $data, 'customer/cart/index');
     }
 
     /**

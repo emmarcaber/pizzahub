@@ -65,7 +65,7 @@ class OrderModel extends Model
     public function generateOrderNumber(): string
     {
         $prefix = 'PIZ';
-        $date = ('Ymd');
+        $date = date('Ymd');
         $random = strtoupper(substr(md5(uniqid(rand(), true)), 0, 4));
 
         return "{$prefix}-{$date}-{$random}";
@@ -115,10 +115,21 @@ class OrderModel extends Model
 
     public function getOrdersByUser(int $userId, int $limit = 10): array
     {
-        return $this->where('user_id', $userId)
+        $orders = $this->where('user_id', $userId)
             ->orderBy('created_at', 'DESC')
             ->limit($limit)
             ->findAll();
+
+        if (!$orders) {
+            return [];
+        }
+
+        $orderItemModel = new OrderItemModel();
+        foreach ($orders as &$order) {
+            $order['items'] = $orderItemModel->getItemsWithDetails($order['id']);
+        }
+
+        return $orders;
     }
 
     public function getOrdersByStatus(string $status, int $limit = 0): array
