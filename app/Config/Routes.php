@@ -23,7 +23,23 @@ $routes->group('', function ($routes) {
 
     $routes->get('logout', 'Authenticated::logout', ['as' => 'auth.logout']);
 
-    $routes->get('update-profile', 'Authenticated::updateProfile', ['as' => 'auth.updateProfile', 'filter' => 'auth:customer']);
+    $routes->get(
+        'update-profile',
+        'Authenticated::updateProfile',
+        ['as' => 'auth.updateProfile', 'filter' => 'auth:customer']
+    );
+
+    $routes->put(
+        'update-profile',
+        'Authenticated::attemptUpdateProfile',
+        ['as' => 'auth.attemptUpdateProfile', 'filter' => 'auth:customer']
+    );
+
+    $routes->put(
+        'change-password',
+        'Authenticated::changePassword',
+        ['as' => 'auth.changePassword', 'filter' => 'auth:customer']
+    );
 });
 
 

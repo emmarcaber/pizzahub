@@ -125,6 +125,95 @@ class Authenticated extends BaseController
             . view('templates/customer/footer');
     }
 
+    public function attemptUpdateProfile(): RedirectResponse
+    {
+        $userId = $this->session->get('id');
+
+        $rules = [
+            'email' => "required|valid_email|is_unique[users.email,id,{$userId}]",
+            'phone' => 'required|regex_match[/^[0-9]{10}$/]',
+            'address' => 'required|min_length[5]|max_length[255]'
+        ];
+
+        if (! $this->validate($rules)) {
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('error', 'Failed to update profile. Please try again.')
+                ->with('validation', $this->validator);
+        }
+
+        $userId = $this->session->get('id');
+        $userData = [
+            'email' => $this->request->getPost('email'),
+            'phone' => $this->request->getPost('phone'),
+            'address' => $this->request->getPost('address')
+        ];
+
+        if (!$this->userModel->update($userId, $userData)) {
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('error', 'Failed to update profile. Please try again.');
+        }
+
+        return redirect()->back()->with('success', 'Profile updated successfully.');
+    }
+
+    public function changePassword(): RedirectResponse
+    {
+        $rules = [
+            'current_password' => 'required',
+            'new_password' => 'required|min_length[8]',
+            'confirm_password' => 'required|matches[new_password]'
+        ];
+
+        $messages = [
+            'current_password' => [
+                'required' => 'The current password field is required.',
+                'min_length' => 'Current password must be at least 8 characters.'
+            ],
+            'new_password' => [
+                'required' => 'The new password field is required.',
+                'min_length' => 'New password must be at least 8 characters.'
+            ],
+            'confirm_password' => [
+                'required' => 'Please confirm your new password.',
+                'matches' => 'Passwords do not match.'
+            ]
+        ];
+
+        $userId = $this->session->get('id');
+        /** @var mixed */
+        $user = $this->userModel->find($userId);
+        $currentPassword = $this->request->getPost('current_password');
+        $newPassword = $this->request->getPost('new_password');
+
+        if (!$this->userModel->verifyCredentials($user['email'], $currentPassword)) {
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('error', 'Failed to change password. Current password is incorrect.');
+        }
+
+        if (!$this->validate($rules, $messages)) {
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('error', 'Failed to change password. Please try again.')
+                ->with('validation', $this->validator);
+        }
+
+        if (!$this->userModel->update($userId, ['password' => password_hash($newPassword, PASSWORD_DEFAULT)])) {
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('error', 'Failed to change password. Please try again.');
+        }
+
+        return redirect()->back()->with('success', 'Password changed successfully.');
+    }
+
     public function attemptRegister(): RedirectResponse
     {
         // Define validation rules
