@@ -117,7 +117,7 @@ class Order extends BaseController
         $data = $this->prepareCommonData('Order Details');
         $data['order'] = $order;
         $data['orderItemsCount'] = $this->orderModel->getOrderItemTotalQuantity($orderId);
-        $data['isOrderCancellable'] = $order['status'] === StatusType::getLabel(StatusType::PENDING->name);
+        $data['isOrderCancellable'] = $order['status'] === strtolower(StatusType::PENDING->name);
 
         return $this->renderCustomerView('customer/orders/show', $data, 'customer/cart/index');
     }

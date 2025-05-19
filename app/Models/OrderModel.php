@@ -79,7 +79,7 @@ class OrderModel extends Model
             $orderData['order_number'] = $this->generateOrderNumber();
         }
 
-        $orderData['status'] = StatusType::getLabel(StatusType::PENDING->name);
+        $orderData['status'] = strtolower(StatusType::PENDING->name);
         $orderId = $this->insert($orderData, true);
 
         if ($orderId) {
@@ -157,11 +157,11 @@ class OrderModel extends Model
         $order = $this->find($orderId);
         $status = $order['status'] ?? null;
 
-        if (! $order || $status !== StatusType::getLabel(StatusType::PENDING->name)) {
+        if (! $order || $status !== strtolower(StatusType::PENDING->name)) {
             return false;
         }
 
-        return $this->update($orderId, ['status' => StatusType::getLabel(StatusType::CANCELLED->name)]);
+        return $this->update($orderId, ['status' => strtolower(StatusType::CANCELLED->name)]);
     }
 
     public function getOrderItemTotalQuantity(int $orderId): int
@@ -173,4 +173,18 @@ class OrderModel extends Model
             ->getRow()
             ->quantity ?? 0;
     }
+
+    public function getWeeklySalesData()
+    {
+        return $this->db->query("
+            SELECT 
+                DATE(created_at) as day, 
+                SUM(total_amount) as total 
+            FROM orders 
+            WHERE created_at >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)
+            GROUP BY DATE(created_at)
+            ORDER BY day ASC
+        ")->getResultArray();
+    }
+    
 }

@@ -196,4 +196,18 @@ class PizzaModel extends Model
 
         return $builder->findAll();
     }
+
+    public function getTopSellingPizzas($limit = 5)
+    {
+        return $this->db->query("
+            SELECT 
+                p.name,
+                COUNT(oi.id) as order_count
+            FROM order_items oi
+            JOIN pizzas p ON p.id = oi.pizza_id
+            GROUP BY oi.pizza_id
+            ORDER BY order_count DESC
+            LIMIT ?
+        ", [$limit])->getResultArray();
+    }
 }

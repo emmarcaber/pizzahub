@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PizzaHub <?= isset($title) ? "- $title" : '' ?></title>
     <link rel="stylesheet" type="text/css" href="<?= base_url('css/styles.css') ?>">
+    <script src="<?= base_url('js/chartjs.js') ?>"></script>
 </head>
 
 <body class="sb-nav-fixed">
