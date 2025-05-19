@@ -60,8 +60,9 @@ class Order extends BaseController
         }
 
         $data = [
-            'title' => 'Order Details',
+            'title' => 'View Order',
             'order' => $order,
+            'statusOptions' => StatusType::optionsKeyValue(),
         ];
 
         return view('templates/admin/header', $data)
