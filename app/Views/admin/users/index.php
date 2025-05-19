@@ -37,7 +37,7 @@
                                             <?= strtoupper(esc($user['role'])) ?>
                                         </span>
                                     </td>
-                                    <td><?= esc($user['phone']) ?></td>
+                                    <td>+63<?= esc($user['phone']) ?></td>
                                     <td class="d-flex justify-content-center align-items-center">
                                         <a href="<?= route_to('admin.users.show', esc($user['id'], 'url')) ?>" class="btn btn-sm btn-primary">
                                             <i class="fas fa-eye"></i> View

@@ -68,12 +68,12 @@ use App\Types\StatusType;
         </div>
     </div>
 
-    <div class="container d-flex justify-content-around align-items-center">
+    <div class="container d-flex justify-content-around align-items-center mb-5">
         <div class="card col-md-5 col-lg-5 p-1">
             <div class="card-body d-flex flex-column gap-1">
                 <span class="fw-bold"><?= $order['customer_name'] ?></span>
                 <span><?= $order['delivery_address'] ?></span>
-                <span><?= esc(date('M d, Y h:i A', strtotime($order['created_at']))) ?></span>
+                <span><?= esc(date('M d, Y H:i A', strtotime($order['created_at']))) ?></span>
                 <span class="mt-2"><?= $order['customer_email'] ?></span>
                 <span>+63<?= $order['customer_phone'] ?></span>
             </div>

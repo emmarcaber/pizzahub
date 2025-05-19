@@ -63,7 +63,7 @@ use App\Types\StatusType;
                                 <span class="badge bg-<?= StatusType::getColor($order['status']) ?>"><?= strtoupper(StatusType::getLabel(esc($order['status']))) ?></span>
                             </td>
                             <td>&#8369;<?= number_format($order['total_amount'] + 30, 2) ?></td>
-                            <td><?= esc(date('M d, Y h:i A', strtotime($order['created_at']))) ?></td>
+                            <td><?= esc(date('M d, Y H:i A', strtotime($order['created_at']))) ?></td>
                             <td>
                                 <a href="<?= route_to('admin.orders.show', $order['id']) ?>"
                                     class="btn btn-primary btn-sm">

@@ -72,7 +72,7 @@ use App\Types\StatusType;
                     </tr>
                     <tr>
                         <th>Date Ordered</th>
-                        <td><?= esc(date('M d, Y h:i A', strtotime($order['created_at']))) ?></td>
+                        <td><?= esc(date('M d, Y H:i A', strtotime($order['created_at']))) ?></td>
                     </tr>
                 </table>
 
