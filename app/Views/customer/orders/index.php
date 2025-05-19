@@ -10,11 +10,37 @@ use App\Types\StatusType;
             <h2>Your Orders</h2>
         </div>
 
-        <form class="d-flex mt-4" role="search">
-            <input class="form-control me-2" type="search" placeholder="Search Orders..." aria-label="Search">
+        <form class="d-flex mt-4" role="search" action="<?= route_to('orders.index') ?>" method="get">
+            <input class="form-control me-2" type="search" name="search" placeholder="Search Orders..."
+                aria-label="Search" value="<?= isset($keyword) ? esc($keyword) : '' ?>">
             <button class="btn btn-outline-danger" type="submit">Search</button>
+            <?php if (isset($keyword) && !empty($keyword)): ?>
+                <a href="<?= route_to('orders.index') ?>" class="btn btn-outline-secondary ms-2">Clear</a>
+            <?php endif; ?>
         </form>
     </div>
+
+    <?php if (isset($keyword) && !empty($keyword)): ?>
+        <div class="alert alert-info alert-dismissible fade show position-fixed start-50 translate-middle-x mt-3" style="top: 3em" role="alert">
+            <?php if (count($orders) > 0): ?>
+                Found <?= count($orders) ?> result(s) for "<?= esc($keyword) ?>"
+            <?php else: ?>
+                No orders found matching "<?= esc($keyword) ?>". Try another search term.
+            <?php endif; ?>
+        </div>
+    <?php endif; ?>
+
+    <?php if (empty($orders)): ?>
+        <div class="card my-4">
+            <div class="card-body text-center py-5">
+                <h5>No orders found</h5>
+                <?php if (!isset($keyword) || empty($keyword)): ?>
+                    <p>You haven't placed any orders yet.</p>
+                    <a href="<?= base_url() ?>" class="btn btn-primary">Browse Pizzas</a>
+                <?php endif; ?>
+            </div>
+        </div>
+    <?php endif; ?>
 
     <?php foreach ($orders as $order): ?>
         <a href="<?= route_to('orders.show', $order['id']) ?>" class="text-decoration-none">

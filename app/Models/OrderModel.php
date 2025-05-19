@@ -186,5 +186,29 @@ class OrderModel extends Model
             ORDER BY day ASC
         ")->getResultArray();
     }
-    
+
+    public function searchOrdersByUser($userId, $keyword = null): array
+    {
+        $builder = $this->db->table('orders')
+            ->select('orders.*, users.name as customer_name')
+            ->join('users', 'users.id = orders.user_id')
+            ->where('orders.user_id', $userId)
+            ->orderBy('orders.created_at', 'DESC');
+
+        if (!empty($keyword)) {
+            $builder->groupStart()
+                ->like('orders.order_number', $keyword)
+                ->orLike('orders.status', $keyword)
+                ->groupEnd();
+        }
+
+        $orders = $builder->get()->getResultArray();
+
+        $orderItemModel = new OrderItemModel();
+        foreach ($orders as &$order) {
+            $order['items'] = $orderItemModel->getItemsWithDetails($order['id']);
+        }
+
+        return $orders;
+    }
 }

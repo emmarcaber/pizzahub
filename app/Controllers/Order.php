@@ -41,9 +41,17 @@ class Order extends BaseController
     public function index(): RedirectResponse|string
     {
         $userId = $this->session->get('id');
-        $orders = $this->orderModel->getOrdersByUser($userId);
+        $keyword = $this->request->getGet('search');
+
+        if (!empty($keyword)) {
+            $orders = $this->orderModel->searchOrdersByUser($userId, $keyword);
+        } else {
+            $orders = $this->orderModel->getOrdersByUser($userId);
+        }
+
         $data = $this->prepareCommonData('My Orders');
         $data['orders'] = $orders;
+        $data['keyword'] = $keyword;
 
         return $this->renderCustomerView('customer/orders/index', $data, 'customer/cart/index');
     }
@@ -55,7 +63,7 @@ class Order extends BaseController
     {
         try {
             $data = $this->prepareCommonData('Checkout');
-            
+
             return $this->renderCustomerView('customer/orders/checkout', $data, 'customer/cart/index');
         } catch (\Exception $e) {
             log_message('error', 'Error in checkout: ' . $e->getMessage());
@@ -77,7 +85,7 @@ class Order extends BaseController
         }
 
         $userId = $this->session->get('id');
-        
+
         // Save user address if requested
         $this->saveUserAddressIfRequested($userId);
 
@@ -171,14 +179,14 @@ class Order extends BaseController
     private function renderCustomerView(string $view, array $data, ?string $extraView = null): string
     {
         $output = view('templates/customer/header', $data);
-        
+
         if ($extraView) {
             $output .= view($extraView, $data);
         }
-        
+
         $output .= view($view, $data);
         $output .= view('templates/customer/footer');
-        
+
         return $output;
     }
 
@@ -202,7 +210,7 @@ class Order extends BaseController
     {
         if ($this->request->getPost('save_info')) {
             $address = $this->request->getPost('address');
-            
+
             $this->userModel->update($userId, [
                 'address' => $address,
             ]);
