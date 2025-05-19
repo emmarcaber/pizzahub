@@ -30,7 +30,13 @@ class Home extends BaseController
     public function index(): RedirectResponse|string
     {
         try {
-            $pizzas = $this->pizzaModel->getPizzasWithCategory(onlyAvailable: true);
+            $keyword = $this->request->getGet('search');
+
+            if (!empty($keyword)) {
+                $pizzas = $this->pizzaModel->searchPizzas($keyword, true);
+            } else {
+                $pizzas = $this->pizzaModel->getPizzasWithCategory(onlyAvailable: true);
+            }
 
             if ($this->session->get('isLoggedIn')) {
                 $userId = $this->session->get('id');
@@ -48,6 +54,7 @@ class Home extends BaseController
                 'cartItems' => $cartItems,
                 'cartCount' => count($cartItems),
                 'total' => $total,
+                'keyword' => $keyword,
             ];
 
             return view('templates/customer/header', $data)

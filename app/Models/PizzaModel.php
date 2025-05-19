@@ -185,19 +185,28 @@ class PizzaModel extends Model
     }
 
 
-    public function search($term, $onlyAvailable = true): array
+    public function searchPizzas($keyword, $onlyAvailable = true): array
     {
-        $builder = $this->like('name', $term)
-            ->orLike('description', $term);
+        $builder = $this->db->table('pizzas')
+            ->select('pizzas.*, categories.name as category_name, categories.description as category_description')
+            ->join('categories', 'categories.id = pizzas.category_id', 'left');
 
         if ($onlyAvailable) {
-            $builder->where('is_available', 1);
+            $builder->where('pizzas.is_available', true);
         }
 
-        return $builder->findAll();
+        if (!empty($keyword)) {
+            $builder->groupStart()
+                ->like('pizzas.name', $keyword)
+                ->orLike('pizzas.description', $keyword)
+                ->orLike('categories.name', $keyword)
+                ->groupEnd();
+        }
+
+        return $builder->get()->getResultArray();
     }
 
-    public function getTopSellingPizzas($limit = 5)
+    public function getTopSellingPizzas($limit = 5): array
     {
         return $this->db->query("
             SELECT 
