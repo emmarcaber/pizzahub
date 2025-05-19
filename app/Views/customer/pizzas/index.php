@@ -18,6 +18,11 @@
                             class="card-img-top" style="width: 100%; height: 21em" alt="<?= esc($pizza['name']) ?>">
                         <div class="card-body">
                             <h5 class="card-title"><?= esc($pizza['name']) ?></h5>
+                            <p class="card-text">
+                                <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="<?= esc($pizza['category_description']) ?>">
+                                    <i class="fas fa-info-circle"></i> <?= esc($pizza['category_name']) ?>
+                                </button>
+                            </p>
                             <p class="card-text"><?= esc($pizza['description']) ?></p>
                             <p class="card-text"><strong>Price:</strong> &#8369;<?= number_format($pizza['price'], 2) ?></p>
                             <a href="<?= route_to('cart.add', $pizza['id']) ?>" class="btn btn-danger">Add to Cart</a>

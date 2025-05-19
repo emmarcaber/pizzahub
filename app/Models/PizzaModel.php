@@ -103,7 +103,7 @@ class PizzaModel extends Model
     public function getPizzasWithCategory($categoryId = null, $onlyAvailable = true): array
     {
         $builder = $this->db->table('pizzas p');
-        $builder->select('p.*, c.name as category_name');
+        $builder->select('p.*, c.name as category_name, c.description as category_description');
         $builder->join('categories c', 'c.id = p.category_id');
 
         if ($categoryId) {
