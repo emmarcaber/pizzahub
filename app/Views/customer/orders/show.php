@@ -33,7 +33,7 @@ use App\Types\StatusType;
                     </div>
                     <span class="text-muted"><?= StatusType::getDescription($order['status']) ?></span>
                 </div>
-                <span class="badge bg-<?= StatusType::getColor($order['status']) ?>"><?= esc(strtoupper($order['status'])) ?></span>
+                <span class="badge bg-<?= StatusType::getColor($order['status']) ?>"><?= esc(strtoupper(StatusType::getLabel($order['status']))) ?></span>
             </div>
         </div>
         <div class="card-body">

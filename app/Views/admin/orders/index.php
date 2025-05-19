@@ -54,7 +54,7 @@
                                                     onchange="toggleSubmitButton(this)">
                                                     <?php foreach ($statusOptions as $statusKey => $statusValue): ?>
                                                         <option value="<?= esc($statusKey) ?>"
-                                                            <?= $statusValue === $order['status'] ? 'selected' : '' ?>>
+                                                            <?= $statusKey === $order['status'] ? 'selected' : '' ?>>
                                                             <?= strtoupper(esc($statusValue)) ?>
                                                         </option>
                                                     <?php endforeach; ?>
