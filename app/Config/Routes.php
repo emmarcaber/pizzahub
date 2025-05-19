@@ -50,6 +50,7 @@ $routes->group('admin', ['as' => 'admin.', 'filter' => 'auth:admin'], function (
 
     $routes->group('users', ['as' => 'users.'], function ($routes) {
         $routes->get('/', [User::class, 'index'], ['as' => 'admin.users.index']);
+        $routes->get('(:num)', [User::class, 'show'], ['as' => 'admin.users.show']);
         $routes->delete('delete/(:num)', [User::class, 'delete'], ['as' => 'admin.users.delete']);
     });
 

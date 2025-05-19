@@ -38,8 +38,12 @@
                                         </span>
                                     </td>
                                     <td><?= esc($user['phone']) ?></td>
-                                    <td>
-                                        <form action="<?= route_to('admin.users.delete', esc($user['id'], 'url')) ?>" method="post">
+                                    <td class="d-flex justify-content-center align-items-center">
+                                        <a href="<?= route_to('admin.users.show', esc($user['id'], 'url')) ?>" class="btn btn-sm btn-primary">
+                                            <i class="fas fa-eye"></i> View
+                                        </a>
+                                        <?php if ($user['role'] !== 'admin'): ?>
+                                        <form class="d-inline" action="<?= route_to('admin.users.delete', esc($user['id'], 'url')) ?>" method="post">
                                             <?= csrf_field() ?>
                                             <input type="hidden" name="_method" value="DELETE">
                                             <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this user? This cannot be undone.');">
@@ -47,6 +51,7 @@
                                                 Delete
                                             </button>
                                         </form>
+                                        <?php endif; ?>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>

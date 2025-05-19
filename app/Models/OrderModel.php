@@ -113,11 +113,10 @@ class OrderModel extends Model
         return $order;
     }
 
-    public function getOrdersByUser(int $userId, int $limit = 10): array
+    public function getOrdersByUser(int $userId): array
     {
         $orders = $this->where('user_id', $userId)
             ->orderBy('created_at', 'DESC')
-            ->limit($limit)
             ->findAll();
 
         if (!$orders) {

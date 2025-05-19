@@ -13,10 +13,6 @@ use App\Types\StatusType;
 
 <div class="card mb-4">
     <div class="card-body">
-        <div class="d-flex justify-content-end align-items-center mb-4">
-            <a href="<?= route_to('admin.orders.index') ?>" class="btn btn-sm btn-primary">Back to Orders</a>
-        </div>
-
         <div class="card mb-4">
             <div class="card-header">
                 <i class="fas fa-table me-1"></i>
@@ -40,7 +36,7 @@ use App\Types\StatusType;
                         <th>Total Amount</th>
                         <td>&#8369;<?= number_format(esc($order['total_amount'] + 30), 2) ?></td>
                     </tr>
-                    <tr>
+                    <tr class="align-middle">
                         <th>Status</th>
                         <td>
                             <form id="statusUpdateForm-<?= $order['id'] ?>"
@@ -73,6 +69,10 @@ use App\Types\StatusType;
                                 </div>
                             </form>
                         </td>
+                    </tr>
+                    <tr>
+                        <th>Date Ordered</th>
+                        <td><?= esc(date('M d, Y h:i A', strtotime($order['created_at']))) ?></td>
                     </tr>
                 </table>
 

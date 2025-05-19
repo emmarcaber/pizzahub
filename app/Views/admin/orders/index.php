@@ -23,6 +23,7 @@
                             <th>Total Price</th>
                             <th>Status</th>
                             <th>Contact Number</th>
+                            <th>Date Ordered</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -70,6 +71,7 @@
                                         </form>
                                     </td>
                                     <td>+63<?= esc($order['customer_phone']) ?></td>
+                                    <td><?= esc(date('M d, Y h:i A', strtotime($order['created_at']))) ?></td>
                                     <td>
                                         <a href="<?= route_to('admin.orders.show', $order['id']) ?>" class="btn btn-primary btn-sm">
                                             <i class="fas fa-eye"></i> View
