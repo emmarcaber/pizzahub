@@ -98,7 +98,7 @@ class OrderModel extends Model
 
     public function getOrderWithDetails(int $orderId): array|object|null
     {
-        $order = $this->select('orders.*, users.name as customer_name, users.email as customer_email, users.phone as customer_phone, users.address as customer_address')
+        $order = $this->select('orders.*, users.name as customer_name, users.email as customer_email, users.phone as customer_phone, users.address as customer_address, users.id as customer_id')
             ->join('users', 'users.id = orders.user_id')
             ->find($orderId);
 

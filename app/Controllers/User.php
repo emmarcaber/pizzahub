@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\UserModel;
+use App\Types\StatusType;
 use App\Controllers\BaseController;
 use CodeIgniter\HTTP\ResponseInterface;
 
@@ -54,6 +55,7 @@ class User extends BaseController
             'title' => 'View User',
             'user' => $user,
             'orders' => $orders,
+            'statusOptions' => StatusType::optionsKeyValue(),
         ];
 
         return view('templates/admin/header', $data)

@@ -1,4 +1,4 @@
-<?php
+<a?php
 
 use App\Types\StatusType;
 
@@ -26,7 +26,7 @@ use App\Types\StatusType;
                     </tr>
                     <tr>
                         <th>Customer Name</th>
-                        <td><?= esc($order['customer_name']) ?></td>
+                        <td><a href="<?= route_to('admin.users.show', $order['customer_id']) ?>"><?= esc($order['customer_name']) ?></a></td>
                     </tr>
                     <tr>
                         <th>Contact Number</th>
