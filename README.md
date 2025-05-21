@@ -1,68 +1,116 @@
-# CodeIgniter 4 Application Starter
+# 🍕 PizzaHub - Online Pizza Ordering System
 
-## What is CodeIgniter?
+![PHP](https://img.shields.io/badge/PHP-7.4%2B-777BB4?logo=php)
+![CodeIgniter](https://img.shields.io/badge/CodeIgniter-4.2%2B-EF4223?logo=codeigniter)
+![MySQL](https://img.shields.io/badge/MySQL-5.7%2B-4479A1?logo=mysql)
 
-CodeIgniter is a PHP full-stack web framework that is light, fast, flexible and secure.
-More information can be found at the [official site](https://codeigniter.com).
+A complete pizza ordering platform built with CodeIgniter 4 for restaurants and small businesses.
 
-This repository holds a composer-installable app starter.
-It has been built from the
-[development repository](https://github.com/codeigniter4/CodeIgniter4).
+![PizzaHub](https://github.com/user-attachments/assets/5eacf46a-40df-4da4-8f28-253df386cf5a)
 
-More information about the plans for version 4 can be found in [CodeIgniter 4](https://forum.codeigniter.com/forumdisplay.php?fid=28) on the forums.
+## ✨ Features
 
-You can read the [user guide](https://codeigniter.com/user_guide/)
-corresponding to the latest version of the framework.
+### Customer Side
+- 🧑‍🤝‍🧑 User registration/login
+- 🍕 Interactive menu with categories
+- 🛒 Real-time cart system
+- 📊 Order tracking (6 status stages)
 
-## Installation & updates
+### Admin Panel
+- 📈 Sales analytics dashboard
+- 📦 Inventory management
+- 📝 Order management console
+- 👥 User administration
 
-`composer create-project codeigniter4/appstarter` then `composer update` whenever
-there is a new release of the framework.
+## 🛠️ Installation
 
-When updating, check the release notes to see if there are any changes you might need to apply
-to your `app` folder. The affected files can be copied or merged from
-`vendor/codeigniter4/framework/app`.
+### Requirements
+- PHP 7.4+
+- MySQL 5.7+
+- Composer
 
-## Setup
+### Setup
+1. Clone the repo:
+   ```bash
+   git clone https://github.com/yourusername/pizzahub.git
+   ```
+2. Install dependencies:
+   ```bash
+   composer install
+   ```
+3. Configure environment:
+   ```bash
+   cp env .env
+   ```
+   Edit database settings in `.env`:
+   ```ini
+   database.default.hostname = localhost
+   database.default.database = pizzahub
+   database.default.username = root
+   database.default.password = 
+   ```
 
-Copy `env` to `.env` and tailor for your app, specifically the baseURL
-and any database settings.
+4. Create a key:
+   ```bash
+   php spark key:generate
+   ```
 
-## Important Change with index.php
+4. Run migrations:
+   ```bash
+   php spark migrate
+   ```
+   
+5. Seed sample data:
+   ```bash
+   php spark db:seed DatabaseSeeder
+   ```
 
-`index.php` is no longer in the root of the project! It has been moved inside the *public* folder,
-for better security and separation of components.
+## 🚀 Usage
 
-This means that you should configure your web server to "point" to your project's *public* folder, and
-not to the project root. A better practice would be to configure a virtual host to point there. A poor practice would be to point your web server to the project root and expect to enter *public/...*, as the rest of your logic and the
-framework are exposed.
+1. Access the site:
+   ```
+   http://localhost/pizzahub/public
+   ```
+2. Admin login:
+   ```
+   Email: admin@pizzahub.com
+   Password: Admin@123
+   ```
 
-**Please** read the user guide for a better explanation of how CI4 works!
+## 📂 Project Structure
 
-## Repository Management
+```
+pizzahub/
+├── app/                # Core application
+│   ├── Config/         # Configuration files
+│   ├── Controllers/    # Application logic
+│   ├── Models/         # Database operations
+│   └── Views/          # Frontend templates
+├── public/             # Web root
+│   └── assets/         # CSS, JS, images
+└── writable/           # Logs, cache, uploads
+```
 
-We use GitHub issues, in our main repository, to track **BUGS** and to track approved **DEVELOPMENT** work packages.
-We use our [forum](http://forum.codeigniter.com) to provide SUPPORT and to discuss
-FEATURE REQUESTS.
+## 🤝 Contributing
 
-This repository is a "distribution" one, built by our release preparation script.
-Problems with it can be raised on our forum, or as issues in the main repository.
+1. Fork the project
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-## Server Requirements
+## 📄 License
 
-PHP version 8.1 or higher is required, with the following extensions installed:
+Distributed under the MIT License. See `LICENSE` for more information.
 
-- [intl](http://php.net/manual/en/intl.requirements.php)
-- [mbstring](http://php.net/manual/en/mbstring.installation.php)
+## 📧 Contact
 
-> [!WARNING]
-> - The end of life date for PHP 7.4 was November 28, 2022.
-> - The end of life date for PHP 8.0 was November 26, 2023.
-> - If you are still using PHP 7.4 or 8.0, you should upgrade immediately.
-> - The end of life date for PHP 8.1 will be December 31, 2025.
+Project Maintainer - [Emmar Caber](mailto:caberemmar@gmail.com)  
+Project Link: [https://github.com/emmarcaber/pizzahub](https://github.com/emmarcaber/pizzahub)
 
-Additionally, make sure that the following extensions are enabled in your PHP:
-
-- json (enabled by default - don't turn it off)
-- [mysqlnd](http://php.net/manual/en/mysqlnd.install.php) if you plan to use MySQL
-- [libcurl](http://php.net/manual/en/curl.requirements.php) if you plan to use the HTTP\CURLRequest library
+To customize:
+1. Replace all `yourusername` references with your GitHub profile
+2. Add actual screenshot (upload to repo or use CDN)
+3. Update contact information
+4. Modify license if not using MIT
+5. Add additional deployment notes if needed (Docker, etc.)
