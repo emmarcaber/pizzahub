@@ -32,7 +32,7 @@ A complete pizza ordering platform built with CodeIgniter 4 for restaurants and 
 ### Setup
 1. Clone the repo:
    ```bash
-   git clone https://github.com/yourusername/pizzahub.git
+   git clone https://github.com/emmarcaber/pizzahub.git
    ```
 2. Install dependencies:
    ```bash
