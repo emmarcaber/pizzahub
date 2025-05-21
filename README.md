@@ -69,7 +69,7 @@ A complete pizza ordering platform built with CodeIgniter 4 for restaurants and 
 
 1. Access the site:
    ```
-   http://localhost/pizzahub/public
+   http://localhost:8080
    ```
 2. Admin login:
    ```
